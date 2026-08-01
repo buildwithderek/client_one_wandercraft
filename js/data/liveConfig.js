@@ -31,30 +31,31 @@
 export const LIVE_WORKER_BASE_URL = 'https://wandercraft-youtube-feed.derekpunaroo.workers.dev';
 
 /**
- * TikTok live badges — OFF until the detector's live branch is confirmed.
+ * TikTok live badges — ON, with one caveat worth knowing.
  *
- * Everything for TikTok is built, tested and deployed; this flag exists
- * because one specific thing could not be verified. The detector's OFFLINE
- * behaviour is measured against all 14 creator accounts. Its LIVE branch is
- * not, because no creator has streamed since it was written and a TikTok
- * LIVE room can't be conjured on demand. So the rule reads fields that are
- * provably offline-valued while offline, but nobody has watched it return
- * true for a real stream.
+ * The detector's OFFLINE behaviour is measured: all 14 creator accounts
+ * were fetched from the deployed Worker and every one produced the same
+ * offline fingerprint. Its LIVE branch has never been observed returning
+ * true for a real stream, because no creator has been live on TikTok while
+ * anyone was watching, and a LIVE room can't be conjured on demand. The
+ * rule reads fields that are provably offline-valued while offline, so the
+ * realistic failure is a badge that never lights up — not a false badge on
+ * someone who isn't streaming.
  *
- * The likely failure mode is a badge that never lights up, not a false
- * badge — but "likely" isn't "verified", so it stays off by default.
+ * That's why this was parked initially. It was turned on as a deliberate
+ * call to accept the assumption rather than wait indefinitely.
  *
- * TO TURN IT ON — verify first, then flip:
+ * WHAT TO WATCH FOR — the first time a creator is visibly live on TikTok:
  *
- *   1. Wait until a creator is visibly live on TikTok.
- *   2. curl -s "<LIVE_WORKER_BASE_URL>/live?platform=tiktok&handles=<handle>"
- *   3. If that returns true, set this to true. If it returns false while
- *      they are streaming, the detector needs fixing first — compare the
- *      page against OFFLINE_FIXTURE in tests/tiktokLive.test.js to find
- *      which field actually changes.
+ *   curl -s "<LIVE_WORKER_BASE_URL>/live?platform=tiktok&handles=<handle>"
  *
- * Flipping this does not require a Worker redeploy; /live?platform=tiktok
- * stays available for the curl check above either way. YouTube is entirely
+ *   true   → the live branch is confirmed; delete this caveat.
+ *   false  → the detector is reading the wrong field. Capture their page
+ *            and diff it against OFFLINE_FIXTURE in tests/tiktokLive.test.js;
+ *            whichever field differs is the one to read.
+ *
+ * Set this to false to park it again — pills revert to ordinary channel
+ * links. No Worker redeploy needed either way, and YouTube is entirely
  * unaffected by this flag.
  */
-export const TIKTOK_LIVE_ENABLED = false;
+export const TIKTOK_LIVE_ENABLED = true;
