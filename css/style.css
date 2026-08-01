@@ -216,19 +216,6 @@ img {
   background: rgba(91, 200, 50, 0.14);
 }
 
-/* Applications — the join-the-collective call to action. Stands out in the
-   pill bar with the grass-green brand accent; fills solid on hover. */
-.nav-link--cta {
-  color: var(--accent);
-  font-weight: 600;
-  background: rgba(91, 200, 50, 0.12);
-}
-
-.nav-link--cta:hover {
-  color: #06210a;
-  background: var(--accent);
-}
-
 .nav-toggle {
   display: none;
   flex-direction: column;

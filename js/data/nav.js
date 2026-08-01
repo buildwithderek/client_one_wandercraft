@@ -6,8 +6,6 @@
  */
 
 // In-page sections in document order — drives the scroll-spy active highlight.
-// "Applications" isn't here: it's an external link (the Google Form), not a
-// section to scroll-spy on.
 export const NAV_LINKS = [
   { id: 'home', label: 'Home' },
   { id: 'creators', label: 'Creators' },
