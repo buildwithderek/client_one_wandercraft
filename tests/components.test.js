@@ -67,17 +67,43 @@ describe('creatorCardHTML (playwandercraft layout)', () => {
     expect(frag.querySelector('img').getAttribute('loading')).toBe('lazy');
   });
 
-  test('renders a hidden LIVE badge when twitchUsername is set', () => {
+  test('renders a Twitch platform pill when twitchUsername is set', () => {
     const frag = parse(creatorCardHTML(creator));
-    const badge = frag.querySelector('.creator-v2-live');
-    expect(badge).toBeTruthy();
-    expect(badge.hasAttribute('hidden')).toBe(true);
-    expect(badge.getAttribute('href')).toBe('https://www.twitch.tv/senseitalon');
+    const pill = frag.querySelector('.platform-pill[data-platform="twitch"]');
+    expect(pill).toBeTruthy();
+    expect(pill.getAttribute('href')).toBe('https://www.twitch.tv/senseitalon');
+    // Offline by default — modules/creators.js adds .is-live on a transition.
+    expect(pill.classList.contains('is-live')).toBe(false);
+    expect(pill.querySelector('.platform-pill-live')).toBeTruthy();
   });
 
-  test('omits the LIVE badge entirely when twitchUsername is missing', () => {
+  test('pills carry the live-swap hooks the poller looks up', () => {
+    const frag = parse(creatorCardHTML(creator));
+    const pill = frag.querySelector('.platform-pill[data-platform="twitch"]');
+    expect(pill.dataset.liveFor).toBe('senseitalon');
+    expect(pill.dataset.profileHref).toBe('https://www.twitch.tv/senseitalon');
+    expect(pill.dataset.liveHref).toBe('https://www.twitch.tv/senseitalon');
+  });
+
+  test('renders one pill per platform the creator has a handle for', () => {
+    const frag = parse(creatorCardHTML({
+      ...creator,
+      youtubeHandle: 'senseitalon',
+      tiktokHandle: 'senseitalon',
+    }));
+    const platforms = [...frag.querySelectorAll('.platform-pill')]
+      .map((p) => p.dataset.platform);
+    expect(platforms).toEqual(['twitch', 'youtube', 'tiktok']);
+    // YouTube/TikTok swap to a distinct /live URL when the creator goes live.
+    const yt = frag.querySelector('.platform-pill[data-platform="youtube"]');
+    expect(yt.dataset.profileHref).toBe('https://www.youtube.com/@senseitalon');
+    expect(yt.dataset.liveHref).toBe('https://www.youtube.com/@senseitalon/live');
+  });
+
+  test('omits the pill row entirely when the creator has no platform handles', () => {
     const frag = parse(creatorCardHTML({ ...creator, twitchUsername: null }));
-    expect(frag.querySelector('.creator-v2-live')).toBeFalsy();
+    expect(frag.querySelector('.platform-pill')).toBeFalsy();
+    expect(frag.querySelector('.platform-pills')).toBeFalsy();
   });
 
   test('exposes data-creator for DOM lookups by id', () => {

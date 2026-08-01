@@ -6,6 +6,8 @@ import {
   stop,
   subscribe,
   getStatus,
+  anyLiveFor,
+  liveOn,
   __resetForTests,
 } from '../js/modules/liveStatus.js';
 
@@ -61,61 +63,102 @@ describe('start/subscribe/stop', () => {
     __resetForTests();
   });
 
+  /** Providers that record their calls, so we can assert on the work queue. */
+  function recordingProviders(calls, result = false) {
+    const record = (platform) => async (handle) => {
+      calls.push(`${platform}:${handle}`);
+      return result;
+    };
+    return { twitch: record('twitch'), youtube: record('youtube'), tiktok: record('tiktok') };
+  }
+
   test('polls every eligible creator once on start', async () => {
     const calls = [];
-    const provider = async (user) => { calls.push(user); return false; };
     const creators = [
       { id: 'a', twitchUsername: 'aaa' },
       { id: 'b', twitchUsername: 'bbb' },
     ];
-    start(creators, { provider, intervalMs: 999_999 });
+    start(creators, { providers: recordingProviders(calls), intervalMs: 999_999 });
     // Wait one microtask flush so the initial pollAll completes.
     await new Promise((r) => setTimeout(r, 0));
-    expect(calls.sort()).toEqual(['aaa', 'bbb']);
+    expect(calls.sort()).toEqual(['twitch:aaa', 'twitch:bbb']);
     stop();
   });
 
-  test('skips creators without a twitchUsername', async () => {
+  test('polls each platform a creator has a handle for', async () => {
     const calls = [];
-    const provider = async (user) => { calls.push(user); return false; };
+    const creators = [
+      { id: 'a', twitchUsername: 'aaa', youtubeHandle: 'aaayt', tiktokHandle: 'aaatt' },
+    ];
+    start(creators, { providers: recordingProviders(calls), intervalMs: 999_999 });
+    await new Promise((r) => setTimeout(r, 0));
+    expect(calls.sort()).toEqual(['tiktok:aaatt', 'twitch:aaa', 'youtube:aaayt']);
+    stop();
+  });
+
+  test('skips (creator, platform) pairs with no handle', async () => {
+    const calls = [];
     const creators = [
       { id: 'a', twitchUsername: null },
-      { id: 'b', twitchUsername: 'bbb' },
+      { id: 'b', twitchUsername: 'bbb', youtubeHandle: null },
     ];
-    start(creators, { provider, intervalMs: 999_999 });
+    start(creators, { providers: recordingProviders(calls), intervalMs: 999_999 });
     await new Promise((r) => setTimeout(r, 0));
-    expect(calls).toEqual(['bbb']);
+    expect(calls).toEqual(['twitch:bbb']);
     stop();
   });
 
   test('notifies listeners only on transitions, not on every poll', async () => {
     const events = [];
-    subscribe((id, snap) => events.push({ id, isLive: snap.isLive }));
+    subscribe((id, platform, snap) => events.push({ id, platform, isLive: snap.isLive }));
 
     // Provider that always returns true — first call should fire, subsequent shouldn't.
-    const provider = async () => true;
+    const providers = { twitch: async () => true };
     const creators = [{ id: 'a', twitchUsername: 'aaa' }];
 
-    start(creators, { provider, intervalMs: 999_999 });
+    start(creators, { providers, intervalMs: 999_999 });
     await new Promise((r) => setTimeout(r, 0));
-    expect(events).toEqual([{ id: 'a', isLive: true }]);
+    expect(events).toEqual([{ id: 'a', platform: 'twitch', isLive: true }]);
 
     // Manually trigger another tick by calling start again — but start is idempotent;
     // we'll instead verify by getting status directly.
-    expect(getStatus('a').isLive).toBe(true);
+    expect(getStatus('a', 'twitch').isLive).toBe(true);
     stop();
   });
 
   test('start() is idempotent — calling twice does not double the timer', () => {
-    const provider = async () => false;
+    const providers = { twitch: async () => false };
     const creators = [{ id: 'a', twitchUsername: 'aaa' }];
-    const firstStop = start(creators, { provider, intervalMs: 999_999 });
-    const secondStop = start(creators, { provider, intervalMs: 999_999 });
+    const firstStop = start(creators, { providers, intervalMs: 999_999 });
+    const secondStop = start(creators, { providers, intervalMs: 999_999 });
     expect(firstStop).toBe(secondStop);
     stop();
   });
 
   test('getStatus returns default offline shape for unknown ids', () => {
-    expect(getStatus('does-not-exist')).toEqual({ isLive: false, lastChecked: 0 });
+    expect(getStatus('does-not-exist', 'twitch'))
+      .toEqual({ isLive: false, lastChecked: 0, handle: null });
+  });
+
+  test('getStatus returns the default shape for an unpolled platform', async () => {
+    const creators = [{ id: 'a', twitchUsername: 'aaa' }];
+    start(creators, { providers: { twitch: async () => true }, intervalMs: 999_999 });
+    await new Promise((r) => setTimeout(r, 0));
+    expect(getStatus('a', 'youtube')).toEqual({ isLive: false, lastChecked: 0, handle: null });
+    stop();
+  });
+
+  test('anyLiveFor / liveOn reflect live platforms', async () => {
+    const creators = [{ id: 'a', twitchUsername: 'aaa', youtubeHandle: 'aaayt' }];
+    start(creators, {
+      providers: { twitch: async () => false, youtube: async () => true },
+      intervalMs: 999_999,
+    });
+    await new Promise((r) => setTimeout(r, 0));
+    expect(anyLiveFor('a')).toBe(true);
+    expect(liveOn('a')).toEqual(['youtube']);
+    expect(anyLiveFor('nobody')).toBe(false);
+    expect(liveOn('nobody')).toEqual([]);
+    stop();
   });
 });
