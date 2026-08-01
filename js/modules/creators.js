@@ -19,7 +19,7 @@ import {
   setupSkinLoaders,
 } from '../components/creatorCard.js';
 import { observeNewElements } from './scrollReveal.js';
-import { LIVE_WORKER_BASE_URL, TIKTOK_LIVE_ENABLED } from '../data/youtubeConfig.js';
+import { LIVE_WORKER_BASE_URL, TIKTOK_LIVE_ENABLED } from '../data/liveConfig.js';
 import * as liveStatus from './liveStatus.js';
 
 /** Filter bar options. */

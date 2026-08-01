@@ -16,7 +16,7 @@
  */
 
 import { CREATORS } from '../data/creators.js';
-import { STATIC_FEED_PATH, INITIAL_VIDEO_COUNT } from '../data/youtubeConfig.js';
+import { STATIC_FEED_PATH, INITIAL_VIDEO_COUNT } from '../data/liveConfig.js';
 
 /**
  * Fetch up to INITIAL_VIDEO_COUNT recent videos from the static feed.

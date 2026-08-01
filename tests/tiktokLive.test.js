@@ -253,7 +253,7 @@ describe('TIKTOK_LIVE_ENABLED gate', () => {
   /** Load creators.js with a stubbed config so both flag states are testable. */
   async function buildProvidersWith({ tiktokEnabled, baseUrl = WORKER }) {
     vi.resetModules();
-    vi.doMock('../js/data/youtubeConfig.js', () => ({
+    vi.doMock('../js/data/liveConfig.js', () => ({
       STATIC_FEED_PATH: 'data/videos.json',
       INITIAL_VIDEO_COUNT: 45,
       LIVE_WORKER_BASE_URL: baseUrl,
@@ -263,7 +263,7 @@ describe('TIKTOK_LIVE_ENABLED gate', () => {
     return buildProviders();
   }
 
-  afterEach(() => { vi.doUnmock('../js/data/youtubeConfig.js'); vi.resetModules(); });
+  afterEach(() => { vi.doUnmock('../js/data/liveConfig.js'); vi.resetModules(); });
 
   test('omits the tiktok provider when the flag is off', async () => {
     const providers = await buildProvidersWith({ tiktokEnabled: false });

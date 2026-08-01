@@ -1,18 +1,36 @@
 /**
- * Configuration for the static YouTube feed.
+ * Configuration for creator content and live status.
  *
- * The GitHub Action in .github/workflows/youtube-feed.yml runs hourly,
- * fetches each creator's YouTube RSS feed, and commits the result to
- * data/videos.json. The frontend just reads that file — no runtime
- * infrastructure, no API keys, no quotas.
+ * Two unrelated things share this file because they're both "where the
+ * creator data comes from", and they sit at opposite ends of a deliberate
+ * trade-off:
  *
- * If the JSON is empty (file exists but contains []), or the fetch
- * fails (offline dev, missing file), the Content Dashboard falls back
- * to the static demo array in data/content.js.
+ *   VIDEO FEED  — static. A GitHub Action regenerates data/videos.json on
+ *                 a schedule and the frontend just reads the file. No
+ *                 runtime infrastructure, no API keys, no quotas.
+ *
+ *   LIVE STATUS — runtime. It can't be static: a file regenerated on a
+ *                 cron is stale the moment someone goes live. So it runs
+ *                 through a Cloudflare Worker instead.
+ *
+ * If you're adding config, put it in the half it belongs to — the feed
+ * constants and the live constants are independent, and turning live
+ * status off does nothing to the video dashboard.
  */
+
+/* ============================================================
+   Static video feed
+   ============================================================ */
 
 /**
  * Path to the static feed, relative to index.html.
+ *
+ * The GitHub Action in .github/workflows/youtube-feed.yml runs hourly,
+ * fetches each creator's YouTube RSS feed, and commits the result here.
+ *
+ * If the JSON is empty (file exists but contains []), or the fetch fails
+ * (offline dev, missing file), the Content Dashboard falls back to the
+ * static demo array in data/content.js.
  *
  * `data/` lives at the repo root next to index.html so it's served at
  * the same origin as the page — no CORS dance, no absolute URL.
@@ -25,16 +43,18 @@ export const STATIC_FEED_PATH = 'data/videos.json';
  *  per-type set — up to 3 per creator — is available to the dashboard). */
 export const INITIAL_VIDEO_COUNT = 45;
 
+/* ============================================================
+   Live status
+   ============================================================ */
+
 /**
  * Base URL of the deployed Cloudflare Worker that backs live status.
  *
- * (Despite this file's name, this one is shared by YouTube AND TikTok —
- * both run through the same Worker, which takes a ?platform= param.)
+ * Shared by YouTube AND TikTok — both run through the same Worker, which
+ * takes a ?platform= param.
  *
- * Unlike the video feed above, live status can't be static: a file
- * regenerated on a cron is stale the moment someone goes live, and neither
- * platform has a CORS-friendly no-auth endpoint the browser can hit
- * directly. So the /live check runs in workers/youtube-feed/worker.js.
+ * Neither platform has a CORS-friendly no-auth endpoint the browser can
+ * hit directly, so the /live check runs in workers/youtube-feed/worker.js.
  *
  * Deployed and live. To redeploy after editing the Worker:
  *

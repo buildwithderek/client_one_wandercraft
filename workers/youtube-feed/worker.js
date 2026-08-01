@@ -32,7 +32,7 @@
  *    it prints a URL like:
  *      https://wandercraft-youtube-feed.<your-subdomain>.workers.dev
  *
- * 4. Paste that URL into js/data/youtubeConfig.js (WORKER_BASE_URL).
+ * 4. Paste that URL into js/data/liveConfig.js (LIVE_WORKER_BASE_URL).
  *
  * 5. Open the page, scroll to the Content Dashboard. Done — the cards
  *    are now real YouTube videos pulled live.
