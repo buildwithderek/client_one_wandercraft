@@ -49,13 +49,23 @@ let activeFilter = 'all';
 export function buildProviders() {
   const providers = {};
 
-  // One batched Worker request per poll cycle covers every creator, so the
-  // provider needs the full handle list up front.
+  if (!LIVE_WORKER_BASE_URL) return providers;
+
+  // One batched Worker request per platform per poll cycle covers every
+  // creator, so each provider needs the full handle list up front.
   const youtubeHandles = CREATORS.map((c) => c.youtubeHandle).filter(Boolean);
-  if (LIVE_WORKER_BASE_URL && youtubeHandles.length > 0) {
+  if (youtubeHandles.length > 0) {
     providers.youtube = liveStatus.createYouTubeProvider({
       baseUrl: LIVE_WORKER_BASE_URL,
       handles: youtubeHandles,
+    });
+  }
+
+  const tiktokHandles = CREATORS.map((c) => c.tiktokHandle).filter(Boolean);
+  if (tiktokHandles.length > 0) {
+    providers.tiktok = liveStatus.createTikTokProvider({
+      baseUrl: LIVE_WORKER_BASE_URL,
+      handles: tiktokHandles,
     });
   }
 

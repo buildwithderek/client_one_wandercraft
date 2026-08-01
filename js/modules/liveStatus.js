@@ -9,8 +9,9 @@
  *   YouTube  → no public no-auth proxy and no CORS, so the check runs in
  *              our own Worker (/live). Wire it with createYouTubeProvider()
  *              once LIVE_WORKER_BASE_URL is set. Default: returns false.
- *   TikTok   → no reliable public API. Provide a `tiktok` provider that
- *              scrapes via your Worker. Default: returns false.
+ *   TikTok   → same story as YouTube: no public API, no CORS. Runs through
+ *              the Worker's /live?platform=tiktok. Wire it with
+ *              createTikTokProvider(). Default: returns false.
  *
  * Public API:
  *   start(creators, opts?)   — begin polling on an interval; returns stop fn
@@ -126,10 +127,52 @@ const YT_SNAPSHOT_TTL_MS = 5_000;
  * than hammering a URL that doesn't exist.
  */
 export function createYouTubeProvider(opts = {}) {
+  return createBatchedProvider({ ...opts, platform: 'youtube' });
+}
+
+/**
+ * Build a TikTok provider backed by the same Worker /live endpoint.
+ *
+ * Identical batching contract to YouTube — see createBatchedProvider. The
+ * platform differences (which URL to scrape, which User-Agent to send,
+ * how to read the response) all live server-side in the Worker, so the
+ * client just names the platform.
+ *
+ *   liveStatus.start(CREATORS, {
+ *     providers: {
+ *       tiktok: createTikTokProvider({
+ *         baseUrl: LIVE_WORKER_BASE_URL,
+ *         handles: CREATORS.map((c) => c.tiktokHandle).filter(Boolean),
+ *       }),
+ *     },
+ *   });
+ */
+export function createTikTokProvider(opts = {}) {
+  return createBatchedProvider({ ...opts, platform: 'tiktok' });
+}
+
+/**
+ * Shared engine behind the YouTube and TikTok providers.
+ *
+ * The poller calls providers one (creator, platform) pair at a time, but
+ * asking the Worker to scrape one page per request would mean a dozen-plus
+ * requests every poll cycle. So this closure inverts it: the first handle
+ * to ask triggers ONE batched request for every handle on that platform,
+ * and the rest of the burst awaits the same promise. N calls in, 1 out.
+ *
+ * Each platform gets its own closure, so YouTube and TikTok batch
+ * independently and one platform's outage can't blank the other.
+ *
+ * Falls back to a noop provider when there's no baseUrl or no handles, so
+ * an unconfigured site degrades to "nobody is live" rather than hammering
+ * a URL that doesn't exist.
+ */
+function createBatchedProvider(opts = {}) {
   const baseUrl = (opts.baseUrl || '').replace(/\/+$/, '');
   const handles = [...new Set((opts.handles || []).filter(Boolean))];
   const ttlMs = opts.ttlMs ?? YT_SNAPSHOT_TTL_MS;
   const fetchImpl = opts.fetch || ((...args) => fetch(...args));
+  const platform = opts.platform;
 
   if (!baseUrl || handles.length === 0) return youtubeNoopProvider;
 
@@ -140,7 +183,8 @@ export function createYouTubeProvider(opts = {}) {
 
   const fetchSnapshot = async () => {
     try {
-      const url = `${baseUrl}/live?handles=${encodeURIComponent(handles.join(','))}`;
+      const url = `${baseUrl}/live?platform=${encodeURIComponent(platform)}`
+        + `&handles=${encodeURIComponent(handles.join(','))}`;
       const res = await fetchImpl(url);
       if (!res.ok) return {};
       const body = await res.json();
@@ -150,7 +194,7 @@ export function createYouTubeProvider(opts = {}) {
     }
   };
 
-  return async function youtubeProvider(handle) {
+  return async function batchedLiveProvider(handle) {
     const now = Date.now();
     if (!snapshot || now - snapshot.at > ttlMs) {
       snapshot = { at: now, promise: fetchSnapshot() };

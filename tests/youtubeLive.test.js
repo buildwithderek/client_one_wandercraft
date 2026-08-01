@@ -216,7 +216,7 @@ describe('createYouTubeProvider', () => {
     const fetchImpl = fakeFetch({});
     const provider = createYouTubeProvider(opts(fetchImpl));
     await provider('aaa');
-    expect(fetchImpl.urls[0]).toBe('https://worker.example.dev/live?handles=aaa%2Cbbb');
+    expect(fetchImpl.urls[0]).toBe('https://worker.example.dev/live?platform=youtube&handles=aaa%2Cbbb');
   });
 
   test('re-fetches once the snapshot TTL has passed', async () => {
@@ -234,14 +234,14 @@ describe('createYouTubeProvider', () => {
       opts(fetchImpl, { baseUrl: 'https://worker.example.dev/' }),
     );
     await provider('aaa');
-    expect(fetchImpl.urls[0]).toContain('.dev/live?handles=');
+    expect(fetchImpl.urls[0]).toContain('.dev/live?platform=youtube&handles=');
   });
 
   test('de-duplicates repeated handles', async () => {
     const fetchImpl = fakeFetch({});
     const provider = createYouTubeProvider(opts(fetchImpl, { handles: ['aaa', 'aaa', 'bbb'] }));
     await provider('aaa');
-    expect(fetchImpl.urls[0]).toBe('https://worker.example.dev/live?handles=aaa%2Cbbb');
+    expect(fetchImpl.urls[0]).toBe('https://worker.example.dev/live?platform=youtube&handles=aaa%2Cbbb');
   });
 
   /* ---- never lie about being live ---- */
