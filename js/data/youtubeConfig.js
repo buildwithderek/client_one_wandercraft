@@ -33,15 +33,13 @@ export const INITIAL_VIDEO_COUNT = 45;
  * has no CORS-friendly no-auth endpoint the browser can hit directly. So
  * the /live check runs in workers/youtube-feed/worker.js instead.
  *
- * To turn YouTube live badges on:
+ * Deployed and live. To redeploy after editing the Worker:
  *
- *   1. cd workers/youtube-feed && wrangler deploy
- *   2. Paste the printed URL here (no trailing slash), e.g.
- *      'https://wandercraft-youtube-feed.your-subdomain.workers.dev'
+ *   cd workers/youtube-feed && wrangler deploy
  *
- * Left empty, modules/creators.js skips the provider entirely and YouTube
- * pills simply never light up — the rest of the dashboard is unaffected.
- * Twitch does NOT depend on this; it polls decapi.me straight from the
- * browser.
+ * Set this back to '' to switch YouTube live badges off: modules/creators.js
+ * then skips the provider entirely and the pills simply never light up, with
+ * the rest of the dashboard unaffected. Twitch does NOT depend on this; it
+ * polls decapi.me straight from the browser.
  */
-export const LIVE_WORKER_BASE_URL = '';
+export const LIVE_WORKER_BASE_URL = 'https://wandercraft-youtube-feed.derekpunaroo.workers.dev';

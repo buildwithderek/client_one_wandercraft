@@ -332,33 +332,49 @@ async function isChannelLive(handle) {
  * Exported for tests — this is the fragile part of the endpoint, since
  * it depends on YouTube's embedded player JSON.
  *
- * Order matters. Checked in sequence:
+ * IMPORTANT: YouTube serves a DIFFERENT render to Cloudflare's edge than
+ * it does to a residential IP. Measured from the deployed Worker against
+ * the same live channel, same User-Agent:
  *
- *   1. "isUpcoming":true — a scheduled stream or premiere that hasn't
- *      started. These pages DO carry live metadata, so this has to be
- *      ruled out before anything else or every countdown reads as live.
- *   2. "isLiveNow":true — liveBroadcastDetails. This is the signal that
- *      actually fires in production: verified against a 24/7 stream
- *      (@LofiGirl → true) and an idle channel (@SenseiTalon → false).
- *   3. hlsManifestUrl + "isLive":true — a dormant safety net. YouTube
- *      does NOT include streamingData for our bot User-Agent, so this
- *      branch never fires today; it's here to catch the case where a
- *      UA or rendering change drops liveBroadcastDetails instead. Both
- *      markers are required together because "isLive":true alone also
- *      appears on channel pages that merely *shelve* someone else's
- *      live video.
+ *                    residential (curl)    Cloudflare edge
+ *   isLiveNow             present              ABSENT
+ *   hlsManifestUrl         absent              absent
+ *   isLive                present              present
+ *
+ * A detector written against what you see in a local curl therefore
+ * returns false for everyone once deployed. Both renders are handled
+ * below; in production it's the isLive path that actually fires.
+ *
+ * Order matters:
+ *
+ *   1. "isLiveNow":true — liveBroadcastDetails. Definitive when present,
+ *      which is the full render, not the edge one.
+ *   2. "isUpcoming":true — a scheduled stream or premiere sitting in its
+ *      waiting room. Those pages carry live metadata too, so they have to
+ *      be ruled out before the weaker signal below. Not hypothetical: a
+ *      real creator (@anuki_too) was in exactly this state during testing
+ *      with "isLive":true set, and would have shown a false LIVE badge.
+ *   3. "isLive":true AND a live viewer count. isLive alone only means
+ *      "this is a live-type video" — a waiting room sets it too, paired
+ *      with "1 waiting". A running stream reads "N watching now", so the
+ *      viewer count is what separates the two.
  *
  * The closing quote in `"isLive"` is load-bearing: videoDetails also
  * carries "isLiveContent":true, which is true for any VOD that was ever
  * a livestream. Matching that would mark a channel live forever after
  * its first stream.
+ *
+ * Validated from the deployed Worker against all 13 creator channels
+ * (idle → false), a scheduled stream (@anuki_too → false) and a 24/7
+ * stream (@LofiGirl → true).
  */
 export function parseYouTubeLiveHtml(html) {
   if (typeof html !== 'string' || html.length === 0) return false;
-  if (/"isUpcoming"\s*:\s*true/.test(html)) return false;
   if (/"isLiveNow"\s*:\s*true/.test(html)) return true;
-  if (/hlsManifestUrl/.test(html) && /"isLive"\s*:\s*true/.test(html)) return true;
-  return false;
+  if (/"isUpcoming"\s*:\s*true/.test(html)) return false;
+  // indexOf rather than a case-insensitive regex: this runs over ~1.1MB
+  // per handle, and up to LIVE_MAX_HANDLES of them share one CPU budget.
+  return /"isLive"\s*:\s*true/.test(html) && html.indexOf('watching now') !== -1;
 }
 
 /* ============================================================

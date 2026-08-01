@@ -16,15 +16,23 @@ import { createYouTubeProvider, youtubeNoopProvider } from '../js/modules/liveSt
    ============================================================ */
 
 describe('parseYouTubeLiveHtml', () => {
-  test('detects an active stream via isLiveNow', () => {
+  /**
+   * Shapes below mirror what each render actually contains — see the
+   * table in the parser's docstring. The edge fixtures are the ones that
+   * matter in production; the full-render fixtures cover a local curl.
+   */
+
+  test('detects an active stream via isLiveNow (full render)', () => {
     const html = `<script>var ytInitialPlayerResponse = {"videoDetails":{"videoId":"abc"},
       "microformat":{"playerMicroformatRenderer":{"liveBroadcastDetails":{"isLiveNow":true}}}};</script>`;
     expect(parseYouTubeLiveHtml(html)).toBe(true);
   });
 
-  test('detects an active stream via hlsManifestUrl + isLive', () => {
-    const html = `<script>{"streamingData":{"hlsManifestUrl":"https://x.googlevideo.com/y.m3u8"},
-      "videoDetails":{"isLive":true}}</script>`;
+  // What Cloudflare's edge actually gets: no liveBroadcastDetails at all,
+  // just isLive plus the live viewer count.
+  test('detects an active stream via isLive + "watching now" (edge render)', () => {
+    const html = `{"videoViewCountRenderer":{"viewCount":{"runs":[{"text":"12,043 watching now"}]},
+      "isLive":true}}`;
     expect(parseYouTubeLiveHtml(html)).toBe(true);
   });
 
@@ -45,20 +53,29 @@ describe('parseYouTubeLiveHtml', () => {
   // that was ever streamed carries isLiveContent:true forever.
   test('does NOT treat isLiveContent as live', () => {
     const html = `{"videoDetails":{"isLiveContent":true,"isLive":false},
-      "streamingData":{"hlsManifestUrl":"https://x/y.m3u8"}}`;
+      "viewCount":{"runs":[{"text":"1,000 watching now"}]}}`;
     expect(parseYouTubeLiveHtml(html)).toBe(false);
   });
 
-  // Scheduled streams and premieres carry live metadata before they start.
-  test('does NOT treat an upcoming stream as live', () => {
-    const html = `{"videoDetails":{"isUpcoming":true,"isLive":true},
-      "streamingData":{"hlsManifestUrl":"https://x/y.m3u8"},
-      "liveBroadcastDetails":{"isLiveNow":true}}`;
+  // Verbatim shape of a real creator's waiting room, caught in testing.
+  // isLive is set, but the count reads "waiting" rather than "watching now".
+  test('does NOT treat a scheduled stream waiting room as live', () => {
+    const html = `{"viewCount":{"videoViewCountRenderer":{"viewCount":{"runs":[{"text":"1 waiting"}]},
+      "isLive":true}},"videoDetails":{"isUpcoming":true}}`;
     expect(parseYouTubeLiveHtml(html)).toBe(false);
   });
 
-  test('requires the manifest — isLive alone is not enough', () => {
+  test('isUpcoming wins even when a stale watching-now string is present', () => {
+    const html = `{"isUpcoming":true,"isLive":true,"runs":[{"text":"5 watching now"}]}`;
+    expect(parseYouTubeLiveHtml(html)).toBe(false);
+  });
+
+  test('isLive alone is not enough — the viewer count must corroborate', () => {
     expect(parseYouTubeLiveHtml('{"videoDetails":{"isLive":true}}')).toBe(false);
+  });
+
+  test('a watching-now string alone is not enough', () => {
+    expect(parseYouTubeLiveHtml('{"runs":[{"text":"12 watching now"}]}')).toBe(false);
   });
 
   test('returns false on empty or non-string input', () => {
