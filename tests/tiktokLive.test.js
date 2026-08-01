@@ -253,9 +253,8 @@ describe('TIKTOK_LIVE_ENABLED gate', () => {
   /** Load creators.js with a stubbed config so both flag states are testable. */
   async function buildProvidersWith({ tiktokEnabled, baseUrl = WORKER }) {
     vi.resetModules();
+    // Only the live constants: creators.js has no reason to touch feedConfig.
     vi.doMock('../js/data/liveConfig.js', () => ({
-      STATIC_FEED_PATH: 'data/videos.json',
-      INITIAL_VIDEO_COUNT: 45,
       LIVE_WORKER_BASE_URL: baseUrl,
       TIKTOK_LIVE_ENABLED: tiktokEnabled,
     }));

@@ -1,51 +1,14 @@
 /**
- * Configuration for creator content and live status.
+ * Configuration for creator live status.
  *
- * Two unrelated things share this file because they're both "where the
- * creator data comes from", and they sit at opposite ends of a deliberate
- * trade-off:
+ * Live status is runtime by necessity: it can't be a file regenerated on a
+ * cron, because that file is stale the moment someone goes live. So it runs
+ * through a Cloudflare Worker.
  *
- *   VIDEO FEED  — static. A GitHub Action regenerates data/videos.json on
- *                 a schedule and the frontend just reads the file. No
- *                 runtime infrastructure, no API keys, no quotas.
- *
- *   LIVE STATUS — runtime. It can't be static: a file regenerated on a
- *                 cron is stale the moment someone goes live. So it runs
- *                 through a Cloudflare Worker instead.
- *
- * If you're adding config, put it in the half it belongs to — the feed
- * constants and the live constants are independent, and turning live
- * status off does nothing to the video dashboard.
+ * The video feed made the opposite trade (fully static, no infrastructure)
+ * and lives in feedConfig.js. The two are independent: turning live status
+ * off does nothing to the video dashboard, and vice versa.
  */
-
-/* ============================================================
-   Static video feed
-   ============================================================ */
-
-/**
- * Path to the static feed, relative to index.html.
- *
- * The GitHub Action in .github/workflows/youtube-feed.yml runs hourly,
- * fetches each creator's YouTube RSS feed, and commits the result here.
- *
- * If the JSON is empty (file exists but contains []), or the fetch fails
- * (offline dev, missing file), the Content Dashboard falls back to the
- * static demo array in data/content.js.
- *
- * `data/` lives at the repo root next to index.html so it's served at
- * the same origin as the page — no CORS dance, no absolute URL.
- *
- * Override if you ever move the file (e.g. to a CDN).
- */
-export const STATIC_FEED_PATH = 'data/videos.json';
-
-/** Max items pulled from the feed (matches the builder's LIMIT so the full
- *  per-type set — up to 3 per creator — is available to the dashboard). */
-export const INITIAL_VIDEO_COUNT = 45;
-
-/* ============================================================
-   Live status
-   ============================================================ */
 
 /**
  * Base URL of the deployed Cloudflare Worker that backs live status.
