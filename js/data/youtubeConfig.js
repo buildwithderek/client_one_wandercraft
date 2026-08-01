@@ -24,3 +24,24 @@ export const STATIC_FEED_PATH = 'data/videos.json';
 /** Max items pulled from the feed (matches the builder's LIMIT so the full
  *  per-type set — up to 3 per creator — is available to the dashboard). */
 export const INITIAL_VIDEO_COUNT = 45;
+
+/**
+ * Base URL of the deployed Cloudflare Worker that backs YouTube live status.
+ *
+ * Unlike the video feed above, live status can't be static: a file
+ * regenerated on a cron is stale the moment someone goes live, and YouTube
+ * has no CORS-friendly no-auth endpoint the browser can hit directly. So
+ * the /live check runs in workers/youtube-feed/worker.js instead.
+ *
+ * To turn YouTube live badges on:
+ *
+ *   1. cd workers/youtube-feed && wrangler deploy
+ *   2. Paste the printed URL here (no trailing slash), e.g.
+ *      'https://wandercraft-youtube-feed.your-subdomain.workers.dev'
+ *
+ * Left empty, modules/creators.js skips the provider entirely and YouTube
+ * pills simply never light up — the rest of the dashboard is unaffected.
+ * Twitch does NOT depend on this; it polls decapi.me straight from the
+ * browser.
+ */
+export const LIVE_WORKER_BASE_URL = '';

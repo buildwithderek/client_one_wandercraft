@@ -47,6 +47,20 @@
  *             Max ~50 (queries beyond that may hit the URL length limit).
  *   limit     Optional. Max items to return. Defaults to 30.
  *
+ *   GET /live?handles=SenseiTalon,JvshuaLP
+ *
+ *   handles   Comma-separated YouTube handles WITHOUT the leading @.
+ *             A UCxxxx channel ID works too — it's detected by shape and
+ *             hits /channel/<id>/live instead of /@<handle>/live.
+ *             Max LIVE_MAX_HANDLES (25) per request.
+ *
+ *   Responds with a flat map, one key per requested handle:
+ *
+ *     { "SenseiTalon": true, "JvshuaLP": false }
+ *
+ *   A handle whose fetch fails reports false rather than dropping out of
+ *   the map — the badge should never claim someone is live on bad data.
+ *
  * --------------------------------------------------------------------
  * RESPONSE FORMAT
  * --------------------------------------------------------------------
@@ -83,6 +97,19 @@ const CACHE_TTL_SECONDS = 600;        // 10 minutes
 const DEFAULT_LIMIT = 30;
 const YT_RSS_BASE = 'https://www.youtube.com/feeds/videos.xml?channel_id=';
 
+/* ---- /live tuning ------------------------------------------------
+   Live pages are ~1MB of HTML each, so this endpoint is far heavier
+   than /videos. Three things keep it cheap:
+     - a 60s edge cache (live status doesn't need to be fresher than
+       the frontend's poll interval)
+     - a bounded fetch pool, so 25 handles don't open 25 sockets
+     - a handle cap, so a malformed query can't fan out unboundedly
+   ------------------------------------------------------------------ */
+const LIVE_CACHE_TTL_SECONDS = 60;
+const LIVE_MAX_HANDLES = 25;
+const LIVE_MAX_PARALLEL = 4;
+const YT_CHANNEL_ID_RE = /^UC[\w-]{22}$/;
+
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
@@ -105,6 +132,10 @@ export default {
     // Health check at root.
     if (url.pathname === '/' || url.pathname === '/health') {
       return json({ ok: true, service: 'wandercraft-youtube-feed' });
+    }
+
+    if (url.pathname === '/live') {
+      return handleLive(url);
     }
 
     if (url.pathname !== '/videos') {
@@ -232,16 +263,115 @@ function decodeXml(s) {
 }
 
 /* ============================================================
+   /live — is each channel streaming right now?
+   ============================================================ */
+
+async function handleLive(url) {
+  const handles = (url.searchParams.get('handles') || '')
+    .split(',')
+    .map((s) => s.trim().replace(/^@/, ''))   // tolerate a leading @
+    .filter(Boolean)
+    .slice(0, LIVE_MAX_HANDLES);
+
+  if (handles.length === 0) {
+    return json({ error: 'No handles supplied. Pass ?handles=name1,name2,...' }, 400);
+  }
+
+  // Bounded-parallel drain, same shape as the frontend poller. Results go
+  // into a map rather than an array so a slow handle can't reorder them.
+  const queue = [...handles];
+  const result = {};
+  const workers = Array.from(
+    { length: Math.min(LIVE_MAX_PARALLEL, queue.length) },
+    async () => {
+      while (queue.length > 0) {
+        const handle = queue.shift();
+        result[handle] = await isChannelLive(handle);
+      }
+    },
+  );
+  await Promise.all(workers);
+
+  return json(result, 200, LIVE_CACHE_TTL_SECONDS);
+}
+
+/**
+ * Fetch a channel's /live page and decide whether it's streaming.
+ *
+ * YouTube serves /@handle/live as the watch page for the active stream
+ * when there is one, and as a plain channel page when there isn't. No
+ * API key, no quota — same trade as the RSS feed above.
+ *
+ * Any failure (network, non-OK, redirect to a consent wall) resolves to
+ * false. An offline badge on a live streamer is a cosmetic miss; a live
+ * badge on an offline streamer sends viewers to a dead link.
+ */
+async function isChannelLive(handle) {
+  try {
+    const path = YT_CHANNEL_ID_RE.test(handle)
+      ? `channel/${encodeURIComponent(handle)}`
+      : `@${encodeURIComponent(handle)}`;
+    const res = await fetch(`https://www.youtube.com/${path}/live`, {
+      // A real UA matters: YouTube serves a stripped page to unknown
+      // clients, and the stripped page has none of the live markers.
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; WanderCraftBot/1.0; +https://playwandercraft.com)',
+        'Accept-Language': 'en-US,en;q=0.9',
+      },
+      cf: { cacheTtl: LIVE_CACHE_TTL_SECONDS, cacheEverything: true },
+    });
+    if (!res.ok) return false;
+    return parseYouTubeLiveHtml(await res.text());
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Pure detector for the live markers in a YouTube watch/channel page.
+ * Exported for tests — this is the fragile part of the endpoint, since
+ * it depends on YouTube's embedded player JSON.
+ *
+ * Order matters. Checked in sequence:
+ *
+ *   1. "isUpcoming":true — a scheduled stream or premiere that hasn't
+ *      started. These pages DO carry live metadata, so this has to be
+ *      ruled out before anything else or every countdown reads as live.
+ *   2. "isLiveNow":true — liveBroadcastDetails. This is the signal that
+ *      actually fires in production: verified against a 24/7 stream
+ *      (@LofiGirl → true) and an idle channel (@SenseiTalon → false).
+ *   3. hlsManifestUrl + "isLive":true — a dormant safety net. YouTube
+ *      does NOT include streamingData for our bot User-Agent, so this
+ *      branch never fires today; it's here to catch the case where a
+ *      UA or rendering change drops liveBroadcastDetails instead. Both
+ *      markers are required together because "isLive":true alone also
+ *      appears on channel pages that merely *shelve* someone else's
+ *      live video.
+ *
+ * The closing quote in `"isLive"` is load-bearing: videoDetails also
+ * carries "isLiveContent":true, which is true for any VOD that was ever
+ * a livestream. Matching that would mark a channel live forever after
+ * its first stream.
+ */
+export function parseYouTubeLiveHtml(html) {
+  if (typeof html !== 'string' || html.length === 0) return false;
+  if (/"isUpcoming"\s*:\s*true/.test(html)) return false;
+  if (/"isLiveNow"\s*:\s*true/.test(html)) return true;
+  if (/hlsManifestUrl/.test(html) && /"isLive"\s*:\s*true/.test(html)) return true;
+  return false;
+}
+
+/* ============================================================
    Helpers
    ============================================================ */
-function json(body, status = 200) {
+function json(body, status = 200, maxAge = CACHE_TTL_SECONDS) {
   return new Response(JSON.stringify(body), {
     status,
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       // Browser cache the same as edge cache, so repeated reloads
       // don't repoll the Worker.
-      'Cache-Control': `public, max-age=${CACHE_TTL_SECONDS}`,
+      'Cache-Control': `public, max-age=${maxAge}`,
       ...CORS_HEADERS,
     },
   });

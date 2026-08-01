@@ -6,8 +6,9 @@
  * a clean provider seam for platforms that need a backend.
  *
  *   Twitch   → decapi.me public proxy, no auth required, works in browser
- *   YouTube  → no public no-auth proxy. Provide a `youtube` provider that
- *              hits your own Worker / API. Default: returns false.
+ *   YouTube  → no public no-auth proxy and no CORS, so the check runs in
+ *              our own Worker (/live). Wire it with createYouTubeProvider()
+ *              once LIVE_WORKER_BASE_URL is set. Default: returns false.
  *   TikTok   → no reliable public API. Provide a `tiktok` provider that
  *              scrapes via your Worker. Default: returns false.
  *
@@ -93,6 +94,72 @@ export function parseDecapiUptime(text) {
 
 /** Default placeholder for YouTube — always returns false until a real provider is wired. */
 export const youtubeNoopProvider = async () => false;
+
+/**
+ * How long one /live snapshot is reused. This exists to coalesce the burst
+ * of per-creator calls inside a SINGLE poll cycle into one request, not to
+ * cache across cycles — so it must stay well below DEFAULT_POLL_MS. The
+ * whole burst lands within milliseconds of itself; 5s is generous.
+ */
+const YT_SNAPSHOT_TTL_MS = 5_000;
+
+/**
+ * Build a YouTube provider backed by the Worker's /live endpoint.
+ *
+ * The poller calls providers one (creator, platform) pair at a time, but
+ * asking the Worker to scrape one ~1MB page per request would mean 13
+ * requests every poll cycle. So this closure inverts it: the first handle
+ * to ask triggers ONE batched request for every handle, and the rest of
+ * the burst awaits that same promise. 13 calls in, 1 request out.
+ *
+ *   liveStatus.start(CREATORS, {
+ *     providers: {
+ *       youtube: createYouTubeProvider({
+ *         baseUrl: 'https://wandercraft-youtube-feed.you.workers.dev',
+ *         handles: CREATORS.map((c) => c.youtubeHandle).filter(Boolean),
+ *       }),
+ *     },
+ *   });
+ *
+ * Falls back to the noop provider when there's no baseUrl or no handles,
+ * so an unconfigured site degrades to "nobody is live on YouTube" rather
+ * than hammering a URL that doesn't exist.
+ */
+export function createYouTubeProvider(opts = {}) {
+  const baseUrl = (opts.baseUrl || '').replace(/\/+$/, '');
+  const handles = [...new Set((opts.handles || []).filter(Boolean))];
+  const ttlMs = opts.ttlMs ?? YT_SNAPSHOT_TTL_MS;
+  const fetchImpl = opts.fetch || ((...args) => fetch(...args));
+
+  if (!baseUrl || handles.length === 0) return youtubeNoopProvider;
+
+  // { at, promise } — `promise` never rejects (see below), so a failed
+  // snapshot is cached like any other and retried on the next cycle
+  // instead of stampeding the Worker mid-outage.
+  let snapshot = null;
+
+  const fetchSnapshot = async () => {
+    try {
+      const url = `${baseUrl}/live?handles=${encodeURIComponent(handles.join(','))}`;
+      const res = await fetchImpl(url);
+      if (!res.ok) return {};
+      const body = await res.json();
+      return body && typeof body === 'object' ? body : {};
+    } catch {
+      return {};
+    }
+  };
+
+  return async function youtubeProvider(handle) {
+    const now = Date.now();
+    if (!snapshot || now - snapshot.at > ttlMs) {
+      snapshot = { at: now, promise: fetchSnapshot() };
+    }
+    const snap = await snapshot.promise;
+    // Strict true only: a missing key or a non-boolean is "not live".
+    return snap[handle] === true;
+  };
+}
 
 /** Default placeholder for TikTok — always returns false until a real provider is wired. */
 export const tiktokNoopProvider = async () => false;

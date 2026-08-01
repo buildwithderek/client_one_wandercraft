@@ -19,6 +19,7 @@ import {
   setupSkinLoaders,
 } from '../components/creatorCard.js';
 import { observeNewElements } from './scrollReveal.js';
+import { LIVE_WORKER_BASE_URL } from '../data/youtubeConfig.js';
 import * as liveStatus from './liveStatus.js';
 
 /** Filter bar options. */
@@ -39,6 +40,28 @@ const HANDLE_FIELD = {
 
 let activeFilter = 'all';
 
+/**
+ * Assemble the per-platform providers for liveStatus.start().
+ *
+ * Only platforms we can actually check are included; anything omitted
+ * falls through to liveStatus's own noop default. Exported for tests.
+ */
+export function buildProviders() {
+  const providers = {};
+
+  // One batched Worker request per poll cycle covers every creator, so the
+  // provider needs the full handle list up front.
+  const youtubeHandles = CREATORS.map((c) => c.youtubeHandle).filter(Boolean);
+  if (LIVE_WORKER_BASE_URL && youtubeHandles.length > 0) {
+    providers.youtube = liveStatus.createYouTubeProvider({
+      baseUrl: LIVE_WORKER_BASE_URL,
+      handles: youtubeHandles,
+    });
+  }
+
+  return providers;
+}
+
 export function initCreators() {
   const section = document.getElementById('creators');
   const grid = section && section.querySelector('.creators-grid');
@@ -54,9 +77,11 @@ export function initCreators() {
   const teardownLoaders = setupSkinLoaders(grid);
   initializeSkinHoverEffects(grid);
 
-  // Start polling. Built-in Twitch provider runs against decapi.me; YouTube
-  // and TikTok use the noop providers until a Worker is wired in.
-  liveStatus.start(CREATORS);
+  // Start polling. Twitch runs against decapi.me straight from the browser.
+  // YouTube goes through our Worker's /live endpoint, but only once
+  // LIVE_WORKER_BASE_URL is filled in — until then it stays a noop and the
+  // YouTube pills just never light up. TikTok has no provider yet.
+  liveStatus.start(CREATORS, { providers: buildProviders() });
 
   // React to per-(creator, platform) transitions.
   const unsub = liveStatus.subscribe((creatorId, platform, snap) => {
