@@ -19,7 +19,7 @@ import {
   setupSkinLoaders,
 } from '../components/creatorCard.js';
 import { observeNewElements } from './scrollReveal.js';
-import { LIVE_WORKER_BASE_URL } from '../data/youtubeConfig.js';
+import { LIVE_WORKER_BASE_URL, TIKTOK_LIVE_ENABLED } from '../data/youtubeConfig.js';
 import * as liveStatus from './liveStatus.js';
 
 /** Filter bar options. */
@@ -61,8 +61,12 @@ export function buildProviders() {
     });
   }
 
+  // TikTok stays parked until its live branch is confirmed against a real
+  // stream — see TIKTOK_LIVE_ENABLED for what's unverified and how to check.
+  // Omitted here, it falls through to liveStatus's noop, so TikTok pills
+  // render as normal channel links and simply never light up.
   const tiktokHandles = CREATORS.map((c) => c.tiktokHandle).filter(Boolean);
-  if (tiktokHandles.length > 0) {
+  if (TIKTOK_LIVE_ENABLED && tiktokHandles.length > 0) {
     providers.tiktok = liveStatus.createTikTokProvider({
       baseUrl: LIVE_WORKER_BASE_URL,
       handles: tiktokHandles,

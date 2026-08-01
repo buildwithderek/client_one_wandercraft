@@ -244,6 +244,62 @@ describe('createTikTokProvider', () => {
 });
 
 /* ============================================================
+   The TIKTOK_LIVE_ENABLED gate
+   ============================================================ */
+
+describe('TIKTOK_LIVE_ENABLED gate', () => {
+  const WORKER = 'https://worker.example.dev';
+
+  /** Load creators.js with a stubbed config so both flag states are testable. */
+  async function buildProvidersWith({ tiktokEnabled, baseUrl = WORKER }) {
+    vi.resetModules();
+    vi.doMock('../js/data/youtubeConfig.js', () => ({
+      STATIC_FEED_PATH: 'data/videos.json',
+      INITIAL_VIDEO_COUNT: 45,
+      LIVE_WORKER_BASE_URL: baseUrl,
+      TIKTOK_LIVE_ENABLED: tiktokEnabled,
+    }));
+    const { buildProviders } = await import('../js/modules/creators.js');
+    return buildProviders();
+  }
+
+  afterEach(() => { vi.doUnmock('../js/data/youtubeConfig.js'); vi.resetModules(); });
+
+  test('omits the tiktok provider when the flag is off', async () => {
+    const providers = await buildProvidersWith({ tiktokEnabled: false });
+    expect(providers.tiktok).toBeUndefined();
+  });
+
+  test('YouTube is unaffected by the flag being off', async () => {
+    const providers = await buildProvidersWith({ tiktokEnabled: false });
+    expect(typeof providers.youtube).toBe('function');
+  });
+
+  test('wires the tiktok provider when the flag is on', async () => {
+    const providers = await buildProvidersWith({ tiktokEnabled: true });
+    expect(typeof providers.tiktok).toBe('function');
+  });
+
+  test('the flag cannot resurrect tiktok without a worker URL', async () => {
+    const providers = await buildProvidersWith({ tiktokEnabled: true, baseUrl: '' });
+    expect(providers.tiktok).toBeUndefined();
+    expect(providers.youtube).toBeUndefined();
+  });
+
+  // The parked path must stay honest: with no provider, liveStatus falls
+  // back to its noop, so TikTok reports offline rather than throwing.
+  test('parked TikTok reports offline rather than erroring', async () => {
+    const providers = await buildProvidersWith({ tiktokEnabled: false });
+    const ls = await import('../js/modules/liveStatus.js');
+    ls.__resetForTests();
+    ls.start([{ id: 'a', tiktokHandle: 'zuuttz' }], { providers, intervalMs: 999_999 });
+    await new Promise((r) => setTimeout(r, 0));
+    expect(ls.getStatus('a', 'tiktok').isLive).toBe(false);
+    ls.stop();
+  });
+});
+
+/* ============================================================
    The two platforms must not share a batch
    ============================================================ */
 
