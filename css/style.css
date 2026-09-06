@@ -84,7 +84,12 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: -1;
+  /* Plain url() first as the fallback; image-set() wins wherever it is
+     supported and serves the smaller WebP. */
   background: url('../assets/bg/islands.jpg') center / cover no-repeat;
+  background: image-set(url('../assets/bg/islands.webp') type('image/webp'),
+                        url('../assets/bg/islands.jpg') type('image/jpeg'))
+              center / cover no-repeat;
 }
 
 body::after {
@@ -394,6 +399,14 @@ img {
   flex-direction: column;
   align-items: center;
   gap: 28px;
+}
+
+/* The LCP element. aspect-ratio holds its box before the bytes land. */
+.hero-banner {
+  width: 100%;
+  max-width: 760px;
+  height: auto;
+  aspect-ratio: 1520 / 624;
 }
 
 .hero-badge {

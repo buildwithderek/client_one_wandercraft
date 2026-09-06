@@ -28,6 +28,8 @@
   <meta name="twitter:description" content="A Minecraft Creator SMP and community of dreamers, adventurers, and world builders. Meet the 14 creators, watch the latest content, and join the Discord.">
   <meta name="twitter:image" content="https://playwandercraft.com/assets/og/wandercraft-og.jpg">
   <meta name="twitter:image:alt" content="The WanderCraft Season 3 logo above the tagline The Adventure Is Everywhere.">
+  <!-- LCP image — preloaded so it is not discovered after the stylesheet parses. -->
+  <link rel="preload" as="image" href="assets/logo/wandercraft-banner.webp" type="image/webp" fetchpriority="high">
   <link rel="stylesheet" href="css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,8 +57,8 @@
           "@type": "ImageObject",
           "@id": "https://playwandercraft.com/#logo",
           "url": "https://playwandercraft.com/assets/logo/wandercraft.png",
-          "width": 2941,
-          "height": 2447,
+          "width": 320,
+          "height": 266,
           "caption": "WanderCraft"
         },
         "image": {
@@ -113,7 +115,7 @@
   <nav class="nav" id="nav" aria-label="Primary">
     <div class="nav-inner">
       <a href="#home" class="nav-logo" aria-label="WanderCraft home">
-        <img class="logo-icon" src="assets/logo/wandercraft.png" alt="" aria-hidden="true">
+        <img class="logo-icon" src="assets/logo/wandercraft.png" alt="" aria-hidden="true" width="41" height="34">
         <span>WanderCraft</span>
       </a>
       <div class="nav-links" id="navLinks">
@@ -144,7 +146,12 @@
         <span class="hero-badge-dot" aria-hidden="true"></span>
         Season 3 — coming soon
       </p>
-      <img class="hero-banner" src="assets/logo/wandercraft-banner.png" alt="WanderCraft Season 3">
+      <picture>
+        <source srcset="assets/logo/wandercraft-banner.webp" type="image/webp">
+        <img class="hero-banner" src="assets/logo/wandercraft-banner.png"
+             alt="WanderCraft Season 3" width="1520" height="624"
+             fetchpriority="high" decoding="async">
+      </picture>
 
       <p class="hero-subtitle">
         A community of dreamers, adventurers, and storytellers exploring
@@ -302,7 +309,7 @@
     <div class="footer-inner">
       <div class="footer-brand">
         <div class="footer-logo">
-          <img class="logo-icon logo-icon--footer" src="assets/logo/wandercraft.png" alt="" aria-hidden="true">
+          <img class="logo-icon logo-icon--footer" src="assets/logo/wandercraft.png" alt="" aria-hidden="true" width="41" height="34">
           <span>WanderCraft</span>
         </div>
         <p>The Adventure Is Everywhere</p>

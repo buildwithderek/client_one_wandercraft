@@ -18,8 +18,9 @@ This is a visual redesign of the original `wandercraft/` project. All JavaScript
   mobile menu is a floating dropdown card with an animated ✕ toggle.
 - **Consistent card system** — creators, content, and merch cards share the
   same border, radius, hover lift, and shadow recipe.
-- **Forest backdrop** — the WanderCraft world render (`assets/bg/forest.jpg`)
-  sits behind the whole site under a dark scrim that keeps text readable.
+- **Island backdrop** — the WanderCraft world render (`assets/bg/islands.webp`,
+  with a JPEG fallback) sits behind the whole site under a dark scrim that
+  keeps text readable.
 - **Accessibility** — global `:focus-visible` ring, full
   `prefers-reduced-motion` support, larger touch targets.
 
