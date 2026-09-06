@@ -1,5 +1,5 @@
 /**
- * The real WanderCraft 17, mirroring playwandercraft.com/creators.
+ * The real WanderCraft 14, mirroring playwandercraft.com/creators.
  *
  * Each entry feeds the creator card (image + name + role + platform pills)
  * and the multi-platform live-status dashboard.
@@ -33,14 +33,11 @@ export const CREATORS = [
   { id: 'senseitalon',  name: 'SenseiTalon',  role: 'FOUNDER',           mcUsername: 'SenseiTalon',  twitchUsername: 'SenseiTalon',           youtubeHandle: 'SenseiTalon', youtubeChannelId: 'UCg969guBVdvlhqzegxPS_tg', tiktokHandle: 'senseitalon_' },
   { id: 'jvshua',       name: 'Jvshua',       role: 'FOUNDER',           mcUsername: 'Jvshua',       twitchUsername: 'jvshualp',     youtubeHandle: 'JvshuaLP', youtubeChannelId: 'UCiHb4WsIO4NFa_2K-dHFfHg', tiktokHandle: 'jvshualp' },
   { id: 'moosted',      name: 'Moosted',      role: 'HEAD ADMIN',        mcUsername: 'Moosted',      twitchUsername: null,           youtubeHandle: null, youtubeChannelId: null, tiktokHandle: null },
-  { id: 'ninjji',       name: 'Ninjji_',      role: 'ADMIN', mcUsername: 'Ninjji_',      twitchUsername: null,           youtubeHandle: null, youtubeChannelId: null, tiktokHandle: null },
   { id: 'K4MPY',        name: 'K4MPY',        role: 'CREATIVE WANDERER', mcUsername: 'K4MPY',        twitchUsername: 'k4mpy',        youtubeHandle: 'K4MPY', youtubeChannelId: 'UCqUgEGSb-Dy2UO8HKojAdDQ', tiktokHandle: 'k4mpyy' },
   { id: 'skertpert',    name: 'skertpert',    role: 'CREATIVE WANDERER', mcUsername: 'skertpert',    twitchUsername: 'skertpert',    youtubeHandle: 'SkertPertt', youtubeChannelId: 'UCJYEH8KAavDDgJfuC9UYDtg', tiktokHandle: 'skertpertt' },
-  { id: 'anuki',        name: 'Anuki',        role: 'CREATIVE WANDERER', mcUsername: 'Anukialso',    twitchUsername: 'anuki_too',    youtubeHandle: 'anuki_too', youtubeChannelId: null, tiktokHandle: null }, // channelId null → excluded from the Content Dashboard feed (still a creator)
   { id: 'sklump',       name: 'Sklump',       role: 'CREATIVE WANDERER', mcUsername: 'Sklump',       twitchUsername: 'sklump_',      youtubeHandle: 'Sklump', youtubeChannelId: 'UCnoDpA_FqyXaGhzJTFuahOw', tiktokHandle: 'sklump_' },
   { id: 'suuko',        name: 'Suuko',        role: 'CREATIVE WANDERER', mcUsername: 'Suuk0oo',        twitchUsername: null,           youtubeHandle: 'suuko.liv3e', youtubeChannelId: null, tiktokHandle: 'suuko_0' },
   { id: 'xkurosaki',    name: 'xKurosaki',    role: 'CREATIVE WANDERER', mcUsername: 'xKurosaki',    twitchUsername: 'xkurosakiii',  youtubeHandle: 'xkurosakiiii', youtubeChannelId: 'UC4UnbBZU53YCGVBrJZrK9Nw', tiktokHandle: 'xkurosaki' },
-  { id: 'gurbygrey',    name: 'GurbyGrey',    role: 'CREATIVE WANDERER', mcUsername: 'GurbyGrey',    twitchUsername: null,           youtubeHandle: null, youtubeChannelId: null, tiktokHandle: 'gurbygrey' },
   { id: 'zuttz',        name: 'zuttz',        role: 'CREATIVE WANDERER', mcUsername: 'zuttz',        twitchUsername: 'zuuttz',       youtubeHandle: 'zuuttz', youtubeChannelId: 'UCMahYnvRPawRRFFMn4HTWdA', tiktokHandle: 'zuuttz' },
   { id: 'its-k0da',     name: 'its_k0da',     role: 'CREATIVE WANDERER', mcUsername: '_kodaaa_',     twitchUsername: 'its_k0da',     youtubeHandle: 'Its_kodaaa', youtubeChannelId: 'UCumRMH_DIUsTCbnEXI2s3Fg', tiktokHandle: 'its_k0da' },
   { id: 'mossymads',    name: 'MossyMads',    role: 'CREATIVE WANDERER', mcUsername: 'MossyMads',    twitchUsername: 'mossymadsmc',  youtubeHandle: 'MossyMads', youtubeChannelId: 'UCXtqffBwTEmk1ia39TzKnNg', tiktokHandle: 'mossymadsmc' },

@@ -11,8 +11,8 @@
  * real channel exists, swap the value here and every link in the app updates.
  */
 
-/** Contact email used for fan-art submissions, store inquiries, and footer. */
-export const CONTACT_EMAIL = 'derekpunaroo@gmail.com';
+/** Brand contact email — fan-art submissions, store inquiries, and the footer. */
+export const CONTACT_EMAIL = 'playwandercraft@gmail.com';
 
 /**
  * Base URL for creator bio pages. Mirrors playwandercraft.com, where each
@@ -47,7 +47,7 @@ export const mailto = (subject) =>
 const ytSearch = (q) => `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`;
 
 /** Official WanderCraft Discord invite. Also used by the Fan Art "Upload Art" CTA. */
-export const DISCORD_INVITE = 'https://discord.gg/ytzqWjYAp';
+export const DISCORD_INVITE = 'https://discord.gg/hEVC3P6syH';
 
 /** Brand-level community links. Replace with real URLs when available. */
 export const COMMUNITY_LINKS = {

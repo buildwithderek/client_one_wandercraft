@@ -6,12 +6,105 @@
   <title>WanderCraft — The Adventure Is Everywhere</title>
   <meta name="description" content="WanderCraft is a Minecraft Creator SMP and community of dreamers, adventurers, and world builders. Come explore content, meet the creators, and join the community.">
   <meta name="theme-color" content="#081120">
+
+  <!-- Canonical: consolidates /, /index.html, and any ?query variant onto one URL. -->
+  <link rel="canonical" href="https://playwandercraft.com/">
+
+  <!-- Open Graph — controls the card shown when the site is shared. -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WanderCraft">
+  <meta property="og:url" content="https://playwandercraft.com/">
+  <meta property="og:title" content="WanderCraft — The Adventure Is Everywhere">
+  <meta property="og:description" content="A Minecraft Creator SMP and community of dreamers, adventurers, and world builders. Meet the 14 creators, watch the latest content, and join the Discord.">
+  <meta property="og:image" content="https://playwandercraft.com/assets/og/wandercraft-og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The WanderCraft Season 3 logo above the tagline The Adventure Is Everywhere.">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter/X card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="WanderCraft — The Adventure Is Everywhere">
+  <meta name="twitter:description" content="A Minecraft Creator SMP and community of dreamers, adventurers, and world builders. Meet the 14 creators, watch the latest content, and join the Discord.">
+  <meta name="twitter:image" content="https://playwandercraft.com/assets/og/wandercraft-og.jpg">
+  <meta name="twitter:image:alt" content="The WanderCraft Season 3 logo above the tagline The Adventure Is Everywhere.">
   <link rel="stylesheet" href="css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="assets/logo/favicon.ico">
+
+  <!--
+    Structured data. One @graph so the Organization and WebSite nodes can
+    reference each other by @id instead of being repeated.
+  -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://playwandercraft.com/#organization",
+        "name": "WanderCraft",
+        "alternateName": "WanderCraft SMP",
+        "url": "https://playwandercraft.com/",
+        "description": "WanderCraft is a Minecraft Creator SMP and community of dreamers, adventurers, and world builders \u2014 a collective of 14 creators sharing one world.",
+        "slogan": "The Adventure Is Everywhere",
+        "logo": {
+          "@type": "ImageObject",
+          "@id": "https://playwandercraft.com/#logo",
+          "url": "https://playwandercraft.com/assets/logo/wandercraft.png",
+          "width": 2941,
+          "height": 2447,
+          "caption": "WanderCraft"
+        },
+        "image": {
+          "@type": "ImageObject",
+          "url": "https://playwandercraft.com/assets/og/wandercraft-og.jpg",
+          "width": 1200,
+          "height": 630
+        },
+        "knowsAbout": [
+          "Minecraft",
+          "Minecraft SMP",
+          "Content creation",
+          "Live streaming",
+          "Community building"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "community",
+          "email": "playwandercraft@gmail.com",
+          "availableLanguage": "English"
+        },
+        "sameAs": [
+          "https://discord.gg/hEVC3P6syH",
+          "https://shopwandercraft.com"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://playwandercraft.com/#website",
+        "url": "https://playwandercraft.com/",
+        "name": "WanderCraft",
+        "description": "The home of the WanderCraft Minecraft Creator SMP \u2014 creators, content, and fan art.",
+        "publisher": { "@id": "https://playwandercraft.com/#organization" },
+        "inLanguage": "en-US"
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://playwandercraft.com/#webpage",
+        "url": "https://playwandercraft.com/",
+        "name": "WanderCraft \u2014 The Adventure Is Everywhere",
+        "isPartOf": { "@id": "https://playwandercraft.com/#website" },
+        "about": { "@id": "https://playwandercraft.com/#organization" },
+        "primaryImageOfPage": { "@id": "https://playwandercraft.com/#logo" },
+        "inLanguage": "en-US"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#home">Skip to main content</a>
@@ -28,8 +121,9 @@
         <a href="#about"    class="nav-link">About</a>
         <a href="#creators" class="nav-link">Creators</a>
         <a href="#content"  class="nav-link">Content</a>
-        <a href="#merch"    class="nav-link">Merch</a>
+        <!-- Merch hidden for the new season: <a href="#merch" class="nav-link">Merch</a> -->
         <a href="#fanart"   class="nav-link">Fan Art</a>
+        <a href="sponsors.html" class="nav-link">Sponsors</a>
       </div>
       <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle menu">
         <span></span><span></span><span></span>
@@ -65,7 +159,7 @@
       <dl class="hero-stats">
         <div class="hero-stat">
           <dt>Creators</dt>
-          <dd>17</dd>
+          <dd>14</dd>
         </div>
         <div class="hero-stat">
           <dt>Continents</dt>
@@ -118,12 +212,12 @@
     </div>
 
     <div class="pillars-cta">
-      <a href="index.html#creators" class="btn btn-primary">Meet the Wanderers</a>
+      <a href="#creators" class="btn btn-primary">Meet the Wanderers</a>
+      <a href="wanderers.html" class="btn btn-outline">Who Are the Wanderers?</a>
     </div>
   </section>
 
 
-  </section>
   <!-- ==================== CREATORS ==================== -->
   <section class="section creators-section" id="creators" aria-labelledby="creators-title">
     <div class="section-header">
@@ -159,14 +253,17 @@
     </div>
   </section>
 
-  <!-- ==================== MERCH ==================== -->
+  <!-- ==================== MERCH ====================
+       HIDDEN — old merch, pulled ahead of the new season. To bring it back, delete this
+       comment wrapper (the JS in js/modules/merch.js and js/data/merch.js is untouched).
+
   <section class="section merch-section" id="merch" aria-labelledby="merch-title">
     <div class="section-header">
       <h2 class="section-title" id="merch-title">WanderCraft Merch</h2>
       <p class="section-desc">Official apparel, stickers, and gear from the WanderCraft collective — shipped worldwide from our store.</p>
     </div>
 
-    <!-- Cards rendered by js/modules/merch.js — each links to shopwandercraft.com -->
+    [ Cards rendered by js/modules/merch.js — each links to shopwandercraft.com ]
     <div class="merch-grid"></div>
 
     <div class="merch-fourthwall">
@@ -176,6 +273,7 @@
       <a href="https://shopwandercraft.com" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Visit Full Store</a>
     </div>
   </section>
+  -->
 
   <!-- ==================== FAN ART ==================== -->
   <section class="section fanart-section" id="fanart" aria-labelledby="fanart-title">
@@ -192,7 +290,7 @@
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         <h3>Share Your Creation</h3>
         <p>Upload your artwork, pixel art, screenshots, or builds — we feature community work every season.</p>
-    <a href="https://discord.gg/ytzqWjYAp" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Join the Discord to Share Art</a>      </div>
+    <a href="https://discord.gg/hEVC3P6syH" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Join the Discord to Share Art</a>      </div>
     </div>
   </section>
 
@@ -219,8 +317,10 @@
         <div class="footer-col">
           <h4>Community</h4>
           <a href="#fanart">Fan Art</a>
-          <a href="#merch">Merch</a>
+          <!-- Merch hidden for the new season: <a href="#merch">Merch</a> -->
           <a href="#about">About</a>
+          <a href="wanderers.html">Who We Are</a>
+          <a href="sponsors.html">Sponsors</a>
         </div>
         <!-- Populated by js/modules/footer.js so external URLs stay in data/links.js -->
         <div class="footer-col" data-col="connect">

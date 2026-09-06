@@ -52,7 +52,7 @@ describe('modal', () => {
     openContactInfo({
       title: 'Shop',
       lead: 'Lead text.',
-      mailtoHref: 'mailto:derekpunaroo@gmail.com?subject=Hi',
+      mailtoHref: 'mailto:playwandercraft@gmail.com?subject=Hi',
       primaryLabel: 'Email Us',
     });
     const primary = document.querySelector('.modal-actions .btn-primary');

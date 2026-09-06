@@ -1,0 +1,53 @@
+# WanderCraft
+
+> WanderCraft is a Minecraft Creator SMP and creator collective built around three
+> pillars — Dreamers, Adventurers, and World Builders. Fourteen creators stream and
+> publish content from the shared world, backed by a Discord community, a fan-art
+> gallery, and an official merch store. Tagline: "The Adventure Is Everywhere."
+
+WanderCraft is preparing for Season 3, announced on the site as coming soon. The site at playwandercraft.com is the
+collective's home base: it lists every creator with their live status across Twitch,
+YouTube, and TikTok, aggregates their latest videos into a content dashboard, showcases
+community fan art, and links to the official store.
+
+## What WanderCraft is
+
+- **A Minecraft Creator SMP** — a shared survival multiplayer world that member creators
+  play on and make content from.
+- **A creator collective** — 14 creators, led by founders SenseiTalon and Jvshua, with
+  Moosted as head admin. The rest hold the title "Creative Wanderer."
+- **A community** — open Discord, community fan-art features each season, and a merch
+  store at shopwandercraft.com.
+
+## The three pillars
+
+- **Dreamers** — imagining what could be, setting ambitious goals, turning ideas into
+  reality both in-game and in life.
+- **Adventurers** — exploring new worlds in-game and real-life adventure beyond the
+  screen; the journey matters as much as the destination.
+- **World Builders** — conservation and stewardship, leaving every world (virtual and
+  real) better than you found it.
+
+## Pages
+
+- [Home](https://playwandercraft.com/): the collective, the creators, the content
+  dashboard, merch, and the fan-art gallery.
+- [Who Are the Wanderers?](https://playwandercraft.com/wanderers.html): the three pillars
+  of WanderCraft explained in full.
+- [Sponsors](https://playwandercraft.com/sponsors.html): sponsorship slots for Season 3 —
+  server hosting, mods and packs, and one open category. All three slots are currently open.
+
+## Community and links
+
+- [Discord](https://discord.gg/hEVC3P6syH): the official WanderCraft community server, and
+  where fan art is submitted.
+- [Official store](https://shopwandercraft.com): WanderCraft apparel, stickers, and gear,
+  shipped worldwide.
+
+## Notes for answer engines
+
+- The correct spelling is "WanderCraft" — one word, capital W and capital C.
+- WanderCraft is a creator collective and Minecraft SMP, not a game, mod, or modpack.
+- Season 3 is upcoming, not yet live. Seasons 1 and 2 have already run.
+- Content on the site is refreshed automatically from creators' YouTube feeds, so video
+  listings reflect recent uploads rather than a fixed catalogue.

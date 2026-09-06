@@ -384,7 +384,7 @@ async function isChannelLive(handle, recipe) {
  *   2. "isUpcoming":true — a scheduled stream or premiere sitting in its
  *      waiting room. Those pages carry live metadata too, so they have to
  *      be ruled out before the weaker signal below. Not hypothetical: a
- *      real creator (@anuki_too) was in exactly this state during testing
+ *      real creator channel was in exactly this state during testing
  *      with "isLive":true set, and would have shown a false LIVE badge.
  *   3. "isLive":true AND a live viewer count. isLive alone only means
  *      "this is a live-type video" — a waiting room sets it too, paired
@@ -397,7 +397,7 @@ async function isChannelLive(handle, recipe) {
  * its first stream.
  *
  * Validated from the deployed Worker against all 13 creator channels
- * (idle → false), a scheduled stream (@anuki_too → false) and a 24/7
+ * (idle → false), a scheduled stream (→ false) and a 24/7
  * stream (@LofiGirl → true).
  */
 export function parseYouTubeLiveHtml(html) {

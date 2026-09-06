@@ -1,0 +1,344 @@
+/* ==========================================================
+   WANDERCRAFT — Sponsors page
+
+   Layered on top of style.css. Every colour, radius, easing
+   and font here comes from the tokens in style.css :root —
+   nothing new is invented, so this page moves whenever the
+   site's design system does.
+   ========================================================== */
+
+/* The site-wide scrim in style.css ramps 0.5 -> 0.85 down the page, because the
+   homepage opens on a logo lockup that wants the sky behind it. This page opens
+   on body copy instead, so hold the deeper end of that ramp the whole way down —
+   the same ground the homepage's card sections already sit on. */
+body::after {
+  background: linear-gradient(to bottom,
+    rgba(8, 17, 32, 0.86),
+    rgba(8, 17, 32, 0.90) 45%,
+    rgba(8, 17, 32, 0.93));
+}
+
+/* ---------- shared page scaffolding ---------- */
+
+.sponsors-main {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: calc(var(--nav-h) + 56px) 24px 0;
+}
+
+.sponsor-section {
+  padding: 72px 0;
+  border-top: 1px solid var(--border);
+}
+
+.sponsor-section:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+/* Eyebrow label. Uses --text-2 rather than --text-3: the lighter token
+   clears AA against both --bg and --bg-raised. */
+.sponsor-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  margin: 0 0 26px;
+}
+
+.sponsor-eyebrow::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ---------- hero ---------- */
+
+.sponsor-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  gap: 56px;
+  align-items: start;
+}
+
+.sponsor-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(38px, 6.4vw, 68px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  margin: 0 0 22px;
+  color: var(--text);
+}
+
+.sponsor-hero-lede {
+  font-size: clamp(16px, 1.5vw, 19px);
+  line-height: 1.65;
+  color: var(--text-2);
+  max-width: 54ch;
+  margin: 0;
+}
+
+/* Stat rail — mirrors the homepage hero-stats trio, boxed for this page. */
+.stat-rail {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg-raised);
+}
+
+.stat-rail div {
+  padding: 20px 12px;
+  text-align: center;
+  border-left: 1px solid var(--border);
+}
+
+.stat-rail div:first-child { border-left: 0; }
+
+.stat-rail dt {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  order: 2;
+  margin-top: 8px;
+}
+
+.stat-rail dd {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text);
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-rail div {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-aside-cta {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  text-align: center;
+}
+
+/* ---------- the recipe ---------- */
+
+.recipe {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(240px, 300px);
+  gap: 28px;
+  align-items: center;
+}
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+/* One ingredient slot. Dashed while it is open — a filled slot drops
+   .slot--open and gets a solid border plus its sponsor's accent. */
+.slot {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  transition: border-color var(--t-fast), transform var(--t-fast);
+}
+
+.slot--open {
+  border-style: dashed;
+  border-color: var(--border-strong);
+  background: transparent;
+}
+
+.slot:hover {
+  border-color: var(--slot-accent, var(--accent-2));
+  transform: translateY(-2px);
+}
+
+.slot-icon {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--slot-accent, var(--accent-2));
+  border-radius: 10px;
+  color: var(--slot-accent, var(--accent-2));
+  margin-bottom: 16px;
+}
+
+.slot--open .slot-icon { border-style: dashed; }
+
+.slot h3 {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin: 0 0 6px;
+}
+
+.slot-category {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--slot-accent, var(--accent-2));
+  margin: 0 0 12px;
+}
+
+.slot p {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--text-2);
+  margin: 0;
+}
+
+.slot-foot {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border-strong);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--slot-accent, var(--accent-2));
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+a.slot-foot:hover { color: var(--text); }
+
+/* The arrow that turns ingredients into a result. Rotates to point
+   down once the recipe stacks. */
+.recipe-arrow {
+  color: var(--text-3);
+  display: grid;
+  place-items: center;
+}
+
+.recipe-result {
+  text-align: center;
+  padding: 30px 24px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(160deg, rgba(91, 200, 50, 0.12), transparent 70%), var(--bg-raised);
+}
+
+.recipe-result img {
+  width: 72px;
+  height: auto;
+  margin: 0 auto 16px;
+  display: block;
+}
+
+.recipe-result h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-wrap: balance;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+
+.recipe-result p {
+  font-size: 14.5px;
+  color: var(--text-2);
+  margin: 0;
+}
+
+/* ---------- closing CTA ---------- */
+
+.sponsor-cta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 48px;
+  align-items: center;
+}
+
+.sponsor-cta h2 {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 4.2vw, 46px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: var(--text);
+  margin: 0 0 18px;
+}
+
+.sponsor-cta p {
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.65;
+  color: var(--text-2);
+  max-width: 50ch;
+  margin: 0;
+}
+
+.sponsor-cta-action { text-align: center; }
+
+.sponsor-cta-note {
+  margin: 12px 0 0;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 900px) {
+  .sponsor-hero,
+  .sponsor-cta {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+
+  .recipe {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .recipe-arrow { transform: rotate(90deg); }
+}
+
+@media (max-width: 640px) {
+  .sponsors-main { padding: calc(var(--nav-h) + 34px) 18px 0; }
+  .sponsor-section { padding: 52px 0; }
+  .recipe-grid { padding: 14px; gap: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slot { transition: none; }
+  .slot:hover { transform: none; }
+}

@@ -2,16 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "punaro-site-v2-preview",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "preview", "--prefix", "/Users/derekpunaro/punaro-site-v2/site", "--", "--port", "4321"],
-      "port": 4321
-    },
-    {
-      "name": "remotion-studio",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "studio", "--prefix", "/Users/derekpunaro/Desktop/wandercraft-video", "--", "--port", "3210", "--no-open"],
-      "port": 3210
+      "name": "wandercraft",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "5173"],
+      "port": 5173
     }
   ]
 }

@@ -1,0 +1,37 @@
+# https://playwandercraft.com/robots.txt
+# WanderCraft — The Adventure Is Everywhere
+
+# Search engines: everything here is public, crawl it all.
+User-agent: *
+Allow: /
+
+# Answer engines and AI crawlers are welcome — we want WanderCraft to be
+# citable when someone asks an assistant about the SMP or its creators.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+Sitemap: https://playwandercraft.com/sitemap.xml

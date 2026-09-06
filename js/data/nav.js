@@ -10,7 +10,7 @@ export const NAV_LINKS = [
   { id: 'home', label: 'Home' },
   { id: 'creators', label: 'Creators' },
   { id: 'content', label: 'Content' },
-  { id: 'merch', label: 'Merch' },
+  // Merch hidden for the new season: { id: 'merch', label: 'Merch' },
   { id: 'fanart', label: 'Fan Art' },
   { id: 'about', label: 'About' },
 ];
@@ -29,7 +29,7 @@ export const FOOTER_GROUPS = [
     title: 'Community',
     links: [
       { label: 'Fan Art', href: '#fanart' },
-      { label: 'Merch', href: '#merch' },
+      // Merch hidden for the new season: { label: 'Merch', href: '#merch' },
       { label: 'About', href: '#about' },
     ],
   },
