@@ -8,7 +8,7 @@
     "publishedAt": "2026-09-02T19:54:02.000Z",
     "link": "https://www.youtube.com/watch?v=_rKr0hgNPf0",
     "thumbnail": "https://i.ytimg.com/vi/_rKr0hgNPf0/hqdefault.jpg",
-    "viewCount": 59000
+    "viewCount": 69000
   },
   {
     "id": "lTn122HLNnA",
@@ -30,7 +30,7 @@
     "publishedAt": "2026-08-30T16:00:01.000Z",
     "link": "https://www.youtube.com/watch?v=X7tlC2HWRho",
     "thumbnail": "https://i.ytimg.com/vi/X7tlC2HWRho/hqdefault.jpg",
-    "viewCount": 41000
+    "viewCount": 43000
   },
   {
     "id": "0-dkPJRGkMw",
@@ -52,7 +52,7 @@
     "publishedAt": "2026-08-29T19:00:26.000Z",
     "link": "https://www.youtube.com/watch?v=5tDL_oW590s",
     "thumbnail": "https://i.ytimg.com/vi/5tDL_oW590s/hqdefault.jpg",
-    "viewCount": 297
+    "viewCount": 370
   },
   {
     "id": "Q1j0QafX5mk",
@@ -63,7 +63,7 @@
     "publishedAt": "2026-08-26T01:00:25.000Z",
     "link": "https://www.youtube.com/watch?v=Q1j0QafX5mk",
     "thumbnail": "https://i.ytimg.com/vi/Q1j0QafX5mk/hqdefault.jpg",
-    "viewCount": 66000
+    "viewCount": 67000
   },
   {
     "id": "-xlEYX5qj7c",
@@ -84,7 +84,8 @@
     "type": "streams",
     "publishedAt": "2026-08-18T09:00:37.000Z",
     "link": "https://www.youtube.com/watch?v=YGFb8mA0srg",
-    "thumbnail": "https://i.ytimg.com/vi/YGFb8mA0srg/hqdefault.jpg"
+    "thumbnail": "https://i.ytimg.com/vi/YGFb8mA0srg/hqdefault.jpg",
+    "viewCount": 461
   },
   {
     "id": "329MbSBPrrw",
@@ -95,7 +96,7 @@
     "publishedAt": "2026-08-16T18:21:51.000Z",
     "link": "https://www.youtube.com/shorts/329MbSBPrrw",
     "thumbnail": "https://i.ytimg.com/vi/329MbSBPrrw/hqdefault.jpg",
-    "viewCount": 335
+    "viewCount": 345
   },
   {
     "id": "FdH4YrQ78iA",
@@ -169,7 +170,7 @@
     "channelTitle": "Sklump",
     "channelId": "UCnoDpA_FqyXaGhzJTFuahOw",
     "type": "videos",
-    "publishedAt": "2026-05-07T07:50:52.369Z",
+    "publishedAt": "2026-05-08T07:48:17.290Z",
     "link": "https://www.youtube.com/watch?v=EtdyZkw3yHw",
     "thumbnail": "https://i.ytimg.com/vi/EtdyZkw3yHw/hqdefault.jpg",
     "viewCount": 484
@@ -186,6 +187,17 @@
     "viewCount": 1600
   },
   {
+    "id": "Iydo2FwMvOc",
+    "title": "Pokopia IS the MOST ADDICTING Game EVER!!",
+    "channelTitle": "SenseiTalon",
+    "channelId": "UCg969guBVdvlhqzegxPS_tg",
+    "type": "videos",
+    "publishedAt": "2026-04-07T21:18:19.044Z",
+    "link": "https://www.youtube.com/watch?v=Iydo2FwMvOc",
+    "thumbnail": "https://i.ytimg.com/vi/Iydo2FwMvOc/hqdefault.jpg",
+    "viewCount": 115
+  },
+  {
     "id": "hobZz9tKlmk",
     "title": "I lost my happy ghast to a glitch (FULL VIDEO)",
     "channelTitle": "MossyMads",
@@ -197,17 +209,6 @@
     "viewCount": 78
   },
   {
-    "id": "Iydo2FwMvOc",
-    "title": "Pokopia IS the MOST ADDICTING Game EVER!!",
-    "channelTitle": "SenseiTalon",
-    "channelId": "UCg969guBVdvlhqzegxPS_tg",
-    "type": "videos",
-    "publishedAt": "2026-04-06T21:20:52.454Z",
-    "link": "https://www.youtube.com/watch?v=Iydo2FwMvOc",
-    "thumbnail": "https://i.ytimg.com/vi/Iydo2FwMvOc/hqdefault.jpg",
-    "viewCount": 115
-  },
-  {
     "id": "jyNL_tV2Jw8",
     "title": "Is This Minecraft? Hytale Pt. 1",
     "channelTitle": "skertpert",
@@ -215,8 +216,7 @@
     "type": "videos",
     "publishedAt": "2026-02-07T04:00:39.000Z",
     "link": "https://www.youtube.com/watch?v=jyNL_tV2Jw8",
-    "thumbnail": "https://i.ytimg.com/vi/jyNL_tV2Jw8/hqdefault.jpg",
-    "viewCount": 70
+    "thumbnail": "https://i.ytimg.com/vi/jyNL_tV2Jw8/hqdefault.jpg"
   },
   {
     "id": "W8csOzWFWdo",
