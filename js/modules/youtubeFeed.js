@@ -74,17 +74,20 @@ function formatViews(n) {
   return `${n} views`;
 }
 
-function formatRelativeDate(iso) {
+/** ISO date → "3 days ago". Exported for tests; `now` is injectable. */
+export function formatRelativeDate(iso, now = Date.now()) {
   if (!iso) return '';
   const then = new Date(iso).getTime();
   if (Number.isNaN(then)) return '';
-  const seconds = Math.max(0, Math.floor((Date.now() - then) / 1000));
-  if (seconds <  60)         return 'just now';
-  if (seconds <  3600)       return `${Math.floor(seconds / 60)} min ago`;
-  if (seconds <  86_400)     return `${Math.floor(seconds / 3600)} hours ago`;
-  if (seconds <  604_800)    return `${Math.floor(seconds / 86_400)} days ago`;
-  if (seconds <  2_629_800)  return `${Math.floor(seconds / 604_800)} weeks ago`;
-  return `${Math.floor(seconds / 2_629_800)} months ago`;
+  const seconds = Math.max(0, Math.floor((now - then) / 1000));
+  const ago = (n, unit) => `${n} ${unit}${n === 1 ? '' : 's'} ago`;
+  if (seconds <  60)          return 'just now';
+  if (seconds <  3600)        return `${Math.floor(seconds / 60)} min ago`;
+  if (seconds <  86_400)      return ago(Math.floor(seconds / 3600), 'hour');
+  if (seconds <  604_800)     return ago(Math.floor(seconds / 86_400), 'day');
+  if (seconds <  2_629_800)   return ago(Math.floor(seconds / 604_800), 'week');
+  if (seconds <  31_557_600)  return ago(Math.floor(seconds / 2_629_800), 'month');
+  return ago(Math.floor(seconds / 31_557_600), 'year');
 }
 
 const PALETTE = ['#1B4965', '#2F6F4F', '#4CAF7D', '#FF8C42', '#D9C3A5', '#ef4444'];

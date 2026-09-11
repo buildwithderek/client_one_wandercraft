@@ -14,8 +14,8 @@
 /**
  * Path to the static feed, relative to index.html.
  *
- * The GitHub Action in .github/workflows/youtube-feed.yml runs hourly,
- * fetches each creator's YouTube RSS feed, and commits the result here.
+ * The GitHub Action in .github/workflows/youtube-feed.yml runs daily,
+ * reads each creator's YouTube channel tabs, and commits the result here.
  *
  * If the JSON is empty (file exists but contains []), or the fetch fails
  * (offline dev, missing file), the Content Dashboard falls back to the

@@ -2,12 +2,13 @@
 #  Wandercraft — YouTube feed regenerator
 # =====================================================================
 #
-#  Runs `node scripts/build-youtube-feed.mjs`, which fetches the public
-#  RSS feed for every creator with a youtubeChannelId in js/data/creators.js,
-#  merges the entries, sorts by publish date, and writes the result to
-#  data/videos.json.
+#  Runs `node scripts/build-youtube-feed.mjs`, which reads the /videos,
+#  /streams and /shorts tabs for every creator with a youtubeChannelId in
+#  js/data/creators.js, takes the newest item of each type, dates it (RSS
+#  when reachable, otherwise the date already on file), sorts newest-first,
+#  and writes the result to data/videos.json.
 #
-#  Schedule:  every hour, on the hour (cron uses UTC).
+#  Schedule:  once a day at 00:00 UTC.
 #  Trigger:   also runs on-demand from the Actions tab via workflow_dispatch.
 #
 #  What ships if anything changed:
