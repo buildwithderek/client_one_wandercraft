@@ -1,3 +1,7 @@
 node_modules/
 .DS_Store
 *.log
+
+# Embargoed roster additions — never commit; the scheduled reveal reads these
+# from the PENDING_CREATORS repo secret instead.
+data/pending-creators.json

@@ -1,0 +1,123 @@
+# =====================================================================
+#  WanderCraft — scheduled roster reveal
+# =====================================================================
+#
+#  Publishes the Season 3 creators at midnight Central on 2026-09-12.
+#
+#  Why the roster lives in a secret:
+#  This repository is public, and js/data/creators.js is served directly at
+#  playwandercraft.com/js/data/creators.js. Committing the new creators
+#  ahead of time — even commented out — would publish their names, handles
+#  and Discord invites to anyone who viewed source. So the entries live in
+#  the PENDING_CREATORS repo secret (encrypted, not readable from the repo)
+#  and are written into the file only when this job runs.
+#
+#  Timing:
+#  Central is on daylight time in September, so midnight on the 12th is
+#  05:00 UTC. GitHub's scheduler is best-effort and can run late under
+#  load, so the job is scheduled three times across that hour; the first
+#  run at or after the reveal instant does the work and the rest are
+#  no-ops, because reveal-creators.mjs skips creators already present.
+#
+#  The REVEAL_AT guard means an early run does nothing rather than
+#  announcing the roster ahead of time.
+#
+#  To cancel: delete the PENDING_CREATORS secret, or this file.
+#  To rehearse: run it from the Actions tab with dry_run = true.
+# =====================================================================
+
+name: Reveal Season 3 creators
+
+on:
+  schedule:
+    - cron: '0 5 12 9 *'    # 00:00 America/Chicago (CDT) on 2026-09-12
+    - cron: '10 5 12 9 *'   # backstops, in case the scheduler runs late
+    - cron: '20 5 12 9 *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report what would change without committing'
+        type: boolean
+        default: false
+      ignore_schedule:
+        description: 'Reveal now, even before the scheduled instant'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: reveal-creators
+  cancel-in-progress: false
+
+env:
+  REVEAL_AT: '2026-09-12T05:00:00Z'
+
+jobs:
+  reveal:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Is it time yet?
+        id: gate
+        run: |
+          now=$(date -u +%s)
+          target=$(date -u -d "$REVEAL_AT" +%s)
+          if [ "${{ inputs.ignore_schedule }}" = "true" ]; then
+            echo "Manual override — proceeding."
+            echo 'go=true' >> "$GITHUB_OUTPUT"
+          elif [ "$now" -ge "$target" ]; then
+            echo "Reveal time has passed ($REVEAL_AT) — proceeding."
+            echo 'go=true' >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Too early — $(( (target - now) / 60 )) minute(s) until $REVEAL_AT. Doing nothing."
+            echo 'go=false' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check the roster secret is present
+        if: steps.gate.outputs.go == 'true'
+        run: |
+          if [ -z "${{ secrets.PENDING_CREATORS }}" ]; then
+            echo '::error::PENDING_CREATORS secret is empty or unset — nothing to reveal.'
+            exit 1
+          fi
+
+      - name: Add the creators and update every roster count
+        if: steps.gate.outputs.go == 'true'
+        env:
+          PENDING_CREATORS: ${{ secrets.PENDING_CREATORS }}
+        run: |
+          node scripts/reveal-creators.mjs ${{ inputs.dry_run == true && '--dry-run' || '' }}
+
+      - name: Verify the site still builds and the roster parses
+        if: steps.gate.outputs.go == 'true' && inputs.dry_run != true
+        run: |
+          npm ci --no-audit --no-fund
+          npm test
+          node -e "import('./js/data/creators.js').then(m=>{
+            const dupes = m.CREATORS.length - new Set(m.CREATORS.map(c=>c.id)).size;
+            if (dupes) { console.error('Duplicate creator ids:', dupes); process.exit(1); }
+            console.log('Roster parses:', m.CREATORS.length, 'creators');
+          })"
+
+      - name: Commit and deploy
+        if: steps.gate.outputs.go == 'true' && inputs.dry_run != true
+        run: |
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git diff --quiet; then
+            echo 'Already revealed — nothing to commit.'
+          else
+            git add -A
+            git commit -m 'Season 3: four new creators join the roster'
+            git push
+            echo "::notice::Roster revealed and pushed. GitHub Pages will deploy in about a minute."
+          fi
