@@ -21,7 +21,6 @@
 export const FAN_ART_ITEMS = [
   { id: 'fan-art-1', title: 'Making a Splash', artist: 'Community', type: 'artwork', likes: 0, height: 340, color: '#29ABE2', image: 'assets/fanArt/fan_art1.webp' },
   { id: 'fan-art-2', title: '2026 Contest Winner',           artist: 'Community', type: 'artwork', likes: 0, height: 260, color: '#5BC832', image: 'assets/fanArt/Winner.webp' },
-  { id: 'fan-art-3', title: 'Peace',           artist: 'Community', type: 'artwork', likes: 0, height: 340, color: '#F7941D', image: 'assets/fanArt/fan_art3.webp' },
   { id: 'fan-art-4', title: 'Sweet Beats',     artist: 'Community', type: 'artwork', likes: 0, height: 300, color: '#EC4899', image: 'assets/fanArt/fan_art4.webp' },
   { id: 'fan-art-5', title: 'MINECO Supremacy', artist: 'MISERY',    type: 'artwork', likes: 0, height: 190, color: '#8B2D8C', image: 'assets/fanArt/fan_art5.webp' },
   { id: 'fan-art-6', title: 'Matcha Potato',    artist: 'Community', type: 'artwork', likes: 0, height: 200, color: '#4CAF7D', image: 'assets/fanArt/fan_art6.webp' },
