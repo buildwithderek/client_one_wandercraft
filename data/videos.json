@@ -29,7 +29,8 @@
     "type": "videos",
     "publishedAt": "2026-08-30T16:00:01.000Z",
     "link": "https://www.youtube.com/watch?v=X7tlC2HWRho",
-    "thumbnail": "https://i.ytimg.com/vi/X7tlC2HWRho/hqdefault.jpg"
+    "thumbnail": "https://i.ytimg.com/vi/X7tlC2HWRho/hqdefault.jpg",
+    "viewCount": 50000
   },
   {
     "id": "0-dkPJRGkMw",
@@ -51,7 +52,7 @@
     "publishedAt": "2026-08-29T19:00:26.000Z",
     "link": "https://www.youtube.com/watch?v=5tDL_oW590s",
     "thumbnail": "https://i.ytimg.com/vi/5tDL_oW590s/hqdefault.jpg",
-    "viewCount": 594
+    "viewCount": 595
   },
   {
     "id": "Q1j0QafX5mk",
@@ -204,8 +205,7 @@
     "type": "videos",
     "publishedAt": "2026-03-12T07:44:46.550Z",
     "link": "https://www.youtube.com/watch?v=Iydo2FwMvOc",
-    "thumbnail": "https://i.ytimg.com/vi/Iydo2FwMvOc/hqdefault.jpg",
-    "viewCount": 117
+    "thumbnail": "https://i.ytimg.com/vi/Iydo2FwMvOc/hqdefault.jpg"
   },
   {
     "id": "jyNL_tV2Jw8",
