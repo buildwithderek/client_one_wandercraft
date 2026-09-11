@@ -806,6 +806,8 @@ img {
 .platform-pill--tw:hover { color: #a78bfa; }
 .platform-pill--yt:hover { color: #f87171; }
 .platform-pill--tt:hover { color: #67e8f9; }
+.platform-pill--ig:hover { color: #f9a8d4; }
+.platform-pill--dc:hover { color: #a5b4fc; }
 
 .platform-pill-live {
   display: none;

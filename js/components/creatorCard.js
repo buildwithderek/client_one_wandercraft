@@ -20,6 +20,7 @@ import {
   youtubeLiveUrlFor,
   tiktokUrlFor,
   tiktokLiveUrlFor,
+  instagramUrlFor,
 } from '../data/links.js';
 import { SOCIAL_ICONS } from './icons.js';
 
@@ -35,9 +36,13 @@ import { SOCIAL_ICONS } from './icons.js';
  *   data-platform="twitch|youtube|tiktok"
  *   data-live-for="<creatorId>"
  *
+ * Instagram and Discord are `live: false` — neither has a broadcast state,
+ * so they render as plain profile links with no live hooks and liveStatus
+ * never touches them.
+ *
  * Only platforms with a handle on this creator are rendered. A creator
- * with only a Twitch handle gets one pill; a creator on all three gets
- * three pills.
+ * with only a Twitch handle gets one pill; a creator on every platform
+ * gets five.
  */
 function renderPlatformPills(creator) {
   const entries = [
@@ -59,26 +64,41 @@ function renderPlatformPills(creator) {
       profileHref: creator.tiktokHandle && tiktokUrlFor(creator.tiktokHandle),
       liveHref: creator.tiktokHandle && tiktokLiveUrlFor(creator.tiktokHandle),
     },
+    {
+      key: 'instagram',
+      live: false,
+      handle: creator.instagramHandle,
+      profileHref: creator.instagramHandle && instagramUrlFor(creator.instagramHandle),
+    },
+    {
+      key: 'discord',
+      live: false,
+      // Already a full invite URL in creators.js — there is no handle to build from.
+      handle: creator.discordInvite,
+      profileHref: creator.discordInvite,
+    },
   ];
 
   const pills = entries
     .filter((e) => e.handle)
     .map((e) => {
       const icon = SOCIAL_ICONS[e.key];
-      return `
-        <a class="platform-pill platform-pill--${icon.cssClass}"
-           href="${e.profileHref}"
+      const liveAttrs = e.live === false ? '' : `
            data-platform="${e.key}"
            data-live-for="${creator.id}"
            data-profile-href="${e.profileHref}"
-           data-live-href="${e.liveHref}"
+           data-live-href="${e.liveHref}"`;
+      const liveBadge = e.live === false ? '' : `
+          <span class="platform-pill-live" aria-hidden="true">
+            <span class="platform-pill-dot"></span>LIVE
+          </span>`;
+      return `
+        <a class="platform-pill platform-pill--${icon.cssClass}"
+           href="${e.profileHref}"${liveAttrs}
            target="_blank"
            rel="noopener noreferrer"
            aria-label="${creator.name} on ${icon.label}">
-          <span class="platform-pill-icon" aria-hidden="true">${icon.svg}</span>
-          <span class="platform-pill-live" aria-hidden="true">
-            <span class="platform-pill-dot"></span>LIVE
-          </span>
+          <span class="platform-pill-icon" aria-hidden="true">${icon.svg}</span>${liveBadge}
         </a>`;
     })
     .join('');

@@ -36,6 +36,9 @@ export const youtubeLiveUrlFor = (handle) => `https://www.youtube.com/@${handle}
 /** TikTok channel URL. `handle` is the @-style handle without the @. */
 export const tiktokUrlFor = (handle) => `https://www.tiktok.com/@${handle}`;
 
+/** Instagram profile URL. `handle` is the @-style handle without the @. */
+export const instagramUrlFor = (handle) => `https://www.instagram.com/${handle}`;
+
 /** TikTok live URL. */
 export const tiktokLiveUrlFor = (handle) => `https://www.tiktok.com/@${handle}/live`;
 

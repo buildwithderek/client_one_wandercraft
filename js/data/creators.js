@@ -20,6 +20,12 @@
  *                   Dashboard. Find a creator's ID in YouTube Studio →
  *                   Settings → Channel, or via commentpicker.com.
  *                   Set to null to skip pulling videos for that creator.
+ *   instagramHandle Instagram handle WITHOUT the leading @. null when they
+ *                   aren't on Instagram. Renders a profile pill only — Instagram
+ *                   has no live state the dashboard can poll.
+ *   discordInvite   FULL invite URL for the creator's own community server (not
+ *                   the WanderCraft server, which lives in data/links.js). null
+ *                   when they don't run one. Also a profile-only pill.
  *   emote           hover pose name; mapped through EMOTE_POSE_MAP in creatorCard.js
  *
  * Order matches the playwandercraft page: Founders → Head Admin → Creative Wanderers.
@@ -30,20 +36,21 @@
  */
 
 export const CREATORS = [
-  { id: 'senseitalon',  name: 'SenseiTalon',  role: 'FOUNDER',           mcUsername: 'SenseiTalon',  twitchUsername: 'SenseiTalon',           youtubeHandle: 'SenseiTalon', youtubeChannelId: 'UCg969guBVdvlhqzegxPS_tg', tiktokHandle: 'senseitalon_' },
-  { id: 'jvshua',       name: 'Jvshua',       role: 'FOUNDER',           mcUsername: 'Jvshua',       twitchUsername: 'jvshualp',     youtubeHandle: 'JvshuaLP', youtubeChannelId: 'UCiHb4WsIO4NFa_2K-dHFfHg', tiktokHandle: 'jvshualp' },
-  { id: 'moosted',      name: 'Moosted',      role: 'HEAD ADMIN',        mcUsername: 'Moosted',      twitchUsername: null,           youtubeHandle: null, youtubeChannelId: null, tiktokHandle: null },
-  { id: 'K4MPY',        name: 'K4MPY',        role: 'CREATIVE WANDERER', mcUsername: 'K4MPY',        twitchUsername: 'k4mpy',        youtubeHandle: 'K4MPY', youtubeChannelId: 'UCqUgEGSb-Dy2UO8HKojAdDQ', tiktokHandle: 'k4mpyy' },
-  { id: 'skertpert',    name: 'skertpert',    role: 'CREATIVE WANDERER', mcUsername: 'skertpert',    twitchUsername: 'skertpert',    youtubeHandle: 'SkertPertt', youtubeChannelId: 'UCJYEH8KAavDDgJfuC9UYDtg', tiktokHandle: 'skertpertt' },
-  { id: 'sklump',       name: 'Sklump',       role: 'CREATIVE WANDERER', mcUsername: 'Sklump',       twitchUsername: 'sklump_',      youtubeHandle: 'Sklump', youtubeChannelId: 'UCnoDpA_FqyXaGhzJTFuahOw', tiktokHandle: 'sklump_' },
-  { id: 'suuko',        name: 'Suuko',        role: 'CREATIVE WANDERER', mcUsername: 'Suuk0oo',        twitchUsername: null,           youtubeHandle: 'suuko.liv3e', youtubeChannelId: null, tiktokHandle: 'suuko_0' },
-  { id: 'xkurosaki',    name: 'xKurosaki',    role: 'CREATIVE WANDERER', mcUsername: 'xKurosaki',    twitchUsername: 'xkurosakiii',  youtubeHandle: 'xkurosakiiii', youtubeChannelId: 'UC4UnbBZU53YCGVBrJZrK9Nw', tiktokHandle: 'xkurosaki' },
-  { id: 'zuttz',        name: 'zuttz',        role: 'CREATIVE WANDERER', mcUsername: 'zuttz',        twitchUsername: 'zuuttz',       youtubeHandle: 'zuuttz', youtubeChannelId: 'UCMahYnvRPawRRFFMn4HTWdA', tiktokHandle: 'zuuttz' },
-  { id: 'its-k0da',     name: 'its_k0da',     role: 'CREATIVE WANDERER', mcUsername: '_kodaaa_',     twitchUsername: 'its_k0da',     youtubeHandle: 'Its_kodaaa', youtubeChannelId: 'UCumRMH_DIUsTCbnEXI2s3Fg', tiktokHandle: 'its_k0da' },
-  { id: 'mossymads',    name: 'MossyMads',    role: 'CREATIVE WANDERER', mcUsername: 'MossyMads',    twitchUsername: 'mossymadsmc',  youtubeHandle: 'MossyMads', youtubeChannelId: 'UCXtqffBwTEmk1ia39TzKnNg', tiktokHandle: 'mossymadsmc' },
-  { id: 'maplenate',    name: 'MapleNate',    role: 'CREATIVE WANDERER', mcUsername: 'MapleNate',    twitchUsername: 'maplenateyt',  youtubeHandle: 'MapleNate', youtubeChannelId: 'UCyxRfpWd5MZ7N7ToButHxyg', tiktokHandle: 'maplenateyt' },
-  { id: 'shashadivine', name: 'shashadivine', role: 'CREATIVE WANDERER', mcUsername: 'shashadivine', twitchUsername: 'shasha_divine', youtubeHandle: 'ShashaDivine', youtubeChannelId: 'UCZb73SS4E_j6qUI7qDqHM0w', tiktokHandle: 'shashadivine' },
-  { id: 'creetchrampage', name: 'CreetchRampage', role: 'CREATIVE WANDERER', mcUsername: 'CreetchRampage', twitchUsername: 'creetchrampage', youtubeHandle: 'CreetchRampage', youtubeChannelId: 'UCqqV91BEDr_0hj9wH0T03fw', tiktokHandle: 'creetchrampage' },
+  { id: 'senseitalon',  name: 'SenseiTalon',  role: 'FOUNDER',           mcUsername: 'SenseiTalon',  twitchUsername: 'SenseiTalon',           youtubeHandle: 'SenseiTalon', youtubeChannelId: 'UCg969guBVdvlhqzegxPS_tg', tiktokHandle: 'senseitalon_', instagramHandle: null, discordInvite: 'https://discord.gg/yx2CuDeX5S' },
+  { id: 'jvshua',       name: 'Jvshua',       role: 'FOUNDER',           mcUsername: 'Jvshua',       twitchUsername: 'jvshualp',     youtubeHandle: 'JvshuaLP', youtubeChannelId: 'UCiHb4WsIO4NFa_2K-dHFfHg', tiktokHandle: 'jvshualp', instagramHandle: null, discordInvite: 'https://discord.gg/XcNtZZa38X' },
+  { id: 'moosted',      name: 'Moosted',      role: 'HEAD ADMIN',        mcUsername: 'Moosted',      twitchUsername: null,           youtubeHandle: null, youtubeChannelId: null, tiktokHandle: null, instagramHandle: null, discordInvite: null },
+  { id: 'K4MPY',        name: 'K4MPY',        role: 'CREATIVE WANDERER', mcUsername: 'K4MPY',        twitchUsername: 'k4mpy',        youtubeHandle: 'K4MPY', youtubeChannelId: 'UCqUgEGSb-Dy2UO8HKojAdDQ', tiktokHandle: 'k4mpyy', instagramHandle: null, discordInvite: 'https://discord.gg/XapcpkkXxg' },
+  { id: 'skertpert',    name: 'skertpert',    role: 'CREATIVE WANDERER', mcUsername: 'skertpert',    twitchUsername: 'skertpert',    youtubeHandle: 'SkertPertt', youtubeChannelId: 'UCJYEH8KAavDDgJfuC9UYDtg', tiktokHandle: 'skertpertt', instagramHandle: null, discordInvite: 'https://discord.gg/Ee33sAddj8' },
+  { id: 'sklump',       name: 'Sklump',       role: 'CREATIVE WANDERER', mcUsername: 'Sklump',       twitchUsername: 'sklump_',      youtubeHandle: 'Sklump', youtubeChannelId: 'UCnoDpA_FqyXaGhzJTFuahOw', tiktokHandle: 'sklump_', instagramHandle: null, discordInvite: 'https://discord.gg/A3fCtfPtAJ' },
+  { id: 'suuko',        name: 'Suuko',        role: 'CREATIVE WANDERER', mcUsername: 'Suuk0oo',        twitchUsername: null,           youtubeHandle: 'suuko.liv3e', youtubeChannelId: null, tiktokHandle: 'suuko_0', instagramHandle: null, discordInvite: 'https://discord.gg/3yK2VREAfg' },
+  { id: 'xkurosaki',    name: 'xKurosaki',    role: 'CREATIVE WANDERER', mcUsername: 'xKurosaki',    twitchUsername: 'xkurosakiii',  youtubeHandle: 'xkurosakiiii', youtubeChannelId: 'UC4UnbBZU53YCGVBrJZrK9Nw', tiktokHandle: 'xkurosaki', instagramHandle: null, discordInvite: 'https://discord.gg/7ErYpJ9egx' },
+  { id: 'zuttz',        name: 'zuttz',        role: 'CREATIVE WANDERER', mcUsername: 'zuttz',        twitchUsername: 'zuuttz',       youtubeHandle: 'zuuttz', youtubeChannelId: 'UCMahYnvRPawRRFFMn4HTWdA', tiktokHandle: 'zuuttz', instagramHandle: null, discordInvite: 'https://discord.gg/zuuttz' },
+  { id: 'its-k0da',     name: 'its_k0da',     role: 'CREATIVE WANDERER', mcUsername: '_kodaaa_',     twitchUsername: 'its_k0da',     youtubeHandle: 'Its_kodaaa', youtubeChannelId: 'UCumRMH_DIUsTCbnEXI2s3Fg', tiktokHandle: 'its_k0da', instagramHandle: null, discordInvite: 'https://discord.gg/fCc3YJ5dJ8' },
+  { id: 'mossymads',    name: 'MossyMads',    role: 'CREATIVE WANDERER', mcUsername: 'MossyMads',    twitchUsername: 'mossymadsmc',  youtubeHandle: 'MossyMads', youtubeChannelId: 'UCXtqffBwTEmk1ia39TzKnNg', tiktokHandle: 'mossymadsmc', instagramHandle: null, discordInvite: 'https://discord.gg/2P4zkRwbmX' },
+  { id: 'maplenate',    name: 'MapleNate',    role: 'CREATIVE WANDERER', mcUsername: 'MapleNate',    twitchUsername: 'maplenateyt',  youtubeHandle: 'MapleNate', youtubeChannelId: 'UCyxRfpWd5MZ7N7ToButHxyg', tiktokHandle: 'maplenateyt', instagramHandle: null, discordInvite: 'https://discord.gg/8A8eSApUj5' },
+  { id: 'shashadivine', name: 'shashadivine', role: 'CREATIVE WANDERER', mcUsername: 'shashadivine', twitchUsername: 'shasha_divine', youtubeHandle: 'ShashaDivine', youtubeChannelId: 'UCZb73SS4E_j6qUI7qDqHM0w', tiktokHandle: 'shashadivine', instagramHandle: null, discordInvite: 'https://discord.gg/rBTRbW8JFs' },
+  { id: 'creetchrampage', name: 'CreetchRampage', role: 'CREATIVE WANDERER', mcUsername: 'CreetchRampage', twitchUsername: 'creetchrampage', youtubeHandle: 'CreetchRampage', youtubeChannelId: 'UCqqV91BEDr_0hj9wH0T03fw', tiktokHandle: 'creetchrampage', instagramHandle: null, discordInvite: 'https://discord.gg/azzQDjrPWQ' },
+
 ];
 
 /** Role display: keys are the canonical role strings, values style hooks. */
