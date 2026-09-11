@@ -22,6 +22,10 @@
 #  The REVEAL_AT guard means an early run does nothing rather than
 #  announcing the roster ahead of time.
 #
+#  It also rebuilds the creator skin map in the same commit, so the new
+#  creators' cards and hovers render the same skin from the first minute
+#  rather than waiting for the next daily skin refresh.
+#
 #  To cancel: delete the PENDING_CREATORS secret, or this file.
 #  To rehearse: run it from the Actions tab with dry_run = true.
 # =====================================================================
@@ -97,6 +101,19 @@ jobs:
         run: |
           node scripts/reveal-creators.mjs ${{ inputs.dry_run == true && '--dry-run' || '' }}
 
+      # Runs after the roster grows so the four new creators get skin hashes in
+      # the same commit. Without this they render by username until the daily
+      # skin job at 04:30 UTC, which leaves them open to the card/hover cache
+      # drift that hash addressing exists to prevent.
+      #
+      # continue-on-error on purpose: a Mojang wobble at midnight must not stop
+      # the announcement. If it fails, skins.js is simply left as-is and those
+      # cards fall back to username addressing, exactly as they would have.
+      - name: Refresh the skin map for the new roster
+        if: steps.gate.outputs.go == 'true' && inputs.dry_run != true
+        continue-on-error: true
+        run: node scripts/build-skin-map.mjs
+
       - name: Verify the site still builds and the roster parses
         if: steps.gate.outputs.go == 'true' && inputs.dry_run != true
         run: |
@@ -117,7 +134,8 @@ jobs:
             echo 'Already revealed — nothing to commit.'
           else
             git add -A
-            git commit -m 'Season 3: four new creators join the roster'
+            git commit -m 'Season 3: four new creators join the roster' \
+                       -m 'Adds the roster additions, updates every hard-coded creator count, and rebuilds the skin map so the new cards render coherently from the start.'
             git push
             echo "::notice::Roster revealed and pushed. GitHub Pages will deploy in about a minute."
           fi
