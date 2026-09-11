@@ -12,7 +12,8 @@
  * rendering the grid.
  */
 
-import { fullBodySkinUrl, skinFallbackChain } from '../utils/skinUrls.js';
+import { fullBodySkinUrl, skinFallbackChain, skinIdentity } from '../utils/skinUrls.js';
+import { SKIN_MAP } from '../data/skins.js';
 import { ROLE_VARIANTS } from '../data/creators.js';
 import {
   twitchUrlFor,
@@ -308,9 +309,9 @@ export function setupSkinLoaders(root = document) {
 export function creatorCardHTML(creator) {
   const roleVariant = ROLE_VARIANTS[creator.role] || 'creative';
   // Primary 3D render: front-facing full body from NMSR.
-  const skinUrl = fullBodySkinUrl(creator.mcUsername, { mode: 'fullbody' });
+  const skinUrl = fullBodySkinUrl(skinIdentity(creator, SKIN_MAP), { mode: 'fullbody' });
   // Hover render: the isometric 3/4 angle of the same 3D skin.
-  const hoverSkin = fullBodySkinUrl(creator.mcUsername, { mode: 'fullbodyiso' });
+  const hoverSkin = fullBodySkinUrl(skinIdentity(creator, SKIN_MAP), { mode: 'fullbodyiso' });
   // Ordered flat-2D fallback renderers (minotar → mc-heads), tried in turn by
   // setupSkinLoaders if the 3D render errors or stalls past the timeout.
   const fallbacks = skinFallbackChain(creator.mcUsername);

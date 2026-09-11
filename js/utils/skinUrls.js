@@ -10,8 +10,9 @@
  * 2D body from minotar.net, then mc-heads.net. See skinFallbackChain() and
  * setupSkinLoaders() in components/creatorCard.js.
  *
- * Everything keys off the username, so a skin updates the moment the player
- * changes it in-game — no asset pipeline required.
+ * Renders are addressed by the skin's texture hash where js/data/skins.js has
+ * one (see skinIdentity below for why), and by username otherwise. The 2D
+ * fallbacks are always username-based — they don't accept hashes.
  */
 
 const NMSR_BASE      = 'https://nmsr.nickac.dev';
@@ -27,9 +28,27 @@ const MC_HEADS_BASE  = 'https://mc-heads.net';
  * See https://nmsr.nickac.dev for the full list. An unknown mode would 404,
  * so callers should stick to the two above.
  */
-export function fullBodySkinUrl(username, { mode = 'fullbody' } = {}) {
-  if (!username) return '';
-  return `${NMSR_BASE}/${mode}/${encodeURIComponent(username)}`;
+export function fullBodySkinUrl(identity, { mode = 'fullbody' } = {}) {
+  if (!identity) return '';
+  return `${NMSR_BASE}/${mode}/${encodeURIComponent(identity)}`;
+}
+
+/**
+ * What to address the 3D render by: a skin's texture hash when js/data/skins.js
+ * has one, otherwise the username.
+ *
+ * The hash matters because the card fetches TWO renders of the same person —
+ * front-facing, and isometric for the hover. NMSR caches per (mode, identity)
+ * and those caches expire independently, so a username-addressed card could
+ * serve a creator's new skin on the card and their old one on hover. A hash
+ * names one exact image forever, so both modes are guaranteed to agree and a
+ * stale render is impossible.
+ *
+ * scripts/build-skin-map.mjs refreshes the map daily. Anyone missing from it
+ * falls back to the username and simply keeps the old behaviour.
+ */
+export function skinIdentity(creator, skinMap = {}) {
+  return skinMap[creator?.id]?.texture || creator?.mcUsername || '';
 }
 
 /**

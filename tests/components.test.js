@@ -41,17 +41,28 @@ describe('creatorCardHTML (playwandercraft layout)', () => {
     expect(wanderer.querySelector('.creator-v2-role--creative')).toBeTruthy();
   });
 
-  test('embeds the 3D Minecraft skin render URL (NMSR) from the username', () => {
+  test('embeds the 3D Minecraft skin render URL (NMSR), addressed by texture hash', () => {
     const frag = parse(creatorCardHTML(creator));
     const img = frag.querySelector('img');
     expect(img.getAttribute('src')).toContain('nmsr.nickac.dev');
-    expect(img.getAttribute('src')).toContain('SenseiTalon');
+    // Mapped creators render by hash, not username — that is what keeps the
+    // card and its hover from drifting onto two different cached skins.
+    expect(img.getAttribute('src')).toMatch(/\/fullbody\/[a-f0-9]{32,64}$/);
   });
 
-  test('hover swaps to the isometric 3D angle of the same skin', () => {
+  test('an unmapped creator still renders, addressed by username', () => {
+    const frag = parse(creatorCardHTML({ ...creator, id: 'not-in-the-skin-map' }));
+    expect(frag.querySelector('img').getAttribute('src')).toContain('SenseiTalon');
+  });
+
+  test('hover swaps to the isometric angle of the SAME skin, not just any render', () => {
     const frag = parse(creatorCardHTML(creator));
     const img = frag.querySelector('img');
-    expect(img.getAttribute('data-hover')).toContain('fullbodyiso');
+    const def = img.getAttribute('src');
+    const hover = img.getAttribute('data-hover');
+    expect(hover).toContain('fullbodyiso');
+    // The bug this guards: default and hover resolving to different skins.
+    expect(hover.split('/').pop()).toBe(def.split('/').pop());
   });
 
   test('image has an ordered fallback chain (minotar before mc-heads)', () => {
@@ -267,5 +278,28 @@ describe('merchCardHTML', () => {
     expect(badge).toBeTruthy();
     expect(badge.classList.contains('new')).toBe(true);
     expect(badge.textContent).toBe('New');
+  });
+});
+
+/* ---------- skin addressing ---------- */
+
+import { skinIdentity } from '../js/utils/skinUrls.js';
+
+describe('skinIdentity', () => {
+  const creator = { id: 'mossymads', mcUsername: 'MossyMads' };
+
+  test('prefers the texture hash so both render modes show the same skin', () => {
+    const map = { mossymads: { texture: 'bc20bd515e88', model: 'slim' } };
+    expect(skinIdentity(creator, map)).toBe('bc20bd515e88');
+  });
+
+  test('falls back to the username when the creator is not in the map', () => {
+    expect(skinIdentity(creator, {})).toBe('MossyMads');
+    expect(skinIdentity(creator)).toBe('MossyMads');
+  });
+
+  test('returns empty rather than undefined when there is nothing to go on', () => {
+    expect(skinIdentity({}, {})).toBe('');
+    expect(skinIdentity(undefined, {})).toBe('');
   });
 });

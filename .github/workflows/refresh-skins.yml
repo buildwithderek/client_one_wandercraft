@@ -1,0 +1,60 @@
+# =====================================================================
+#  WanderCraft — creator skin map refresher
+# =====================================================================
+#
+#  Re-resolves every creator's current Minecraft skin to its texture hash
+#  and commits js/data/skins.js.
+#
+#  Why the site needs this: the creator card fetches two renders of the
+#  same person (front-facing, plus isometric on hover). The renderer
+#  caches per mode, and those caches expire independently — so addressing
+#  them by username let a card show a creator's new skin while the hover
+#  still showed their old one. Addressing both by the skin's immutable
+#  texture hash makes that impossible. The cost is that the hash has to be
+#  refreshed when someone changes their skin, which is this job.
+#
+#  Between runs the site is at most a day behind a skin change, and anyone
+#  missing from the map falls back to username addressing rather than
+#  failing to render.
+# =====================================================================
+
+name: Refresh creator skins
+
+on:
+  schedule:
+    - cron: '30 4 * * *'   # daily, offset from the YouTube feed job
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-skins
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Resolve current skins
+        run: node scripts/build-skin-map.mjs
+
+      - name: Commit if changed
+        run: |
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git diff --quiet -- js/data/skins.js; then
+            echo 'No skin changes — nothing to commit.'
+          else
+            git add js/data/skins.js
+            git commit -m 'chore(skins): refresh creator skin map'
+            git push
+          fi
