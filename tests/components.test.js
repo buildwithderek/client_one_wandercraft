@@ -65,12 +65,15 @@ describe('creatorCardHTML (playwandercraft layout)', () => {
     expect(hover.split('/').pop()).toBe(def.split('/').pop());
   });
 
-  test('image has an ordered fallback chain (minotar before mc-heads)', () => {
+  test('image falls back to minotar, and to nothing that serves the wrong skin', () => {
     const frag = parse(creatorCardHTML(creator));
     const img = frag.querySelector('img');
     const chain = img.getAttribute('data-fallbacks').split('|');
     expect(chain[0]).toContain('minotar.net');
-    expect(chain[1]).toContain('mc-heads.net');
+    // mc-heads was removed: it serves default Steve for these players, and a
+    // fallback that renders a stranger is worse than the card's placeholder.
+    expect(chain).toHaveLength(1);
+    expect(img.getAttribute('data-fallbacks')).not.toContain('mc-heads');
   });
 
   test('image uses lazy loading', () => {
@@ -145,7 +148,7 @@ describe('setupSkinLoaders stall timeout', () => {
         <img class="creator-skin"
              src="https://nmsr.nickac.dev/fullbody/Foo"
              data-default="https://nmsr.nickac.dev/fullbody/Foo"
-             data-fallbacks="https://minotar.net/body/Foo/300.png|https://mc-heads.net/body/Foo/right">
+             data-fallbacks="https://minotar.net/body/Foo/300.png">
       </div>`;
     const img = document.querySelector('.creator-skin');
     // Force the "in flight" branch: request issued, nothing resolved yet.

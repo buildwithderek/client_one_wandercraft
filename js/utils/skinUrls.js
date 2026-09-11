@@ -7,8 +7,8 @@
  * starlightskins.lunareclipse.studio (which had repeated multi-hour 502s).
  *
  * If the 3D render doesn't come back in time, the loader falls back to a flat
- * 2D body from minotar.net, then mc-heads.net. See skinFallbackChain() and
- * setupSkinLoaders() in components/creatorCard.js.
+ * 2D body from minotar.net. See skinFallbackChain() and setupSkinLoaders() in
+ * components/creatorCard.js.
  *
  * Renders are addressed by the skin's texture hash where js/data/skins.js has
  * one (see skinIdentity below for why), and by username otherwise. The 2D
@@ -17,7 +17,6 @@
 
 const NMSR_BASE      = 'https://nmsr.nickac.dev';
 const MINOTAR_BASE   = 'https://minotar.net';
-const MC_HEADS_BASE  = 'https://mc-heads.net';
 
 /**
  * 3D full-body render (the primary, "hero" look).
@@ -52,11 +51,10 @@ export function skinIdentity(creator, skinMap = {}) {
 }
 
 /**
- * Front-facing flat 2D body from minotar.net. This is the FIRST fallback when
- * the 3D render is slow or down: unlike mc-heads (which can return an empty
- * 200 for a username), minotar reliably returns real PNG bytes for every IGN
- * we've tested. `size` is the render width in px; pixelated rendering keeps it
- * crisp.
+ * Front-facing flat 2D body from minotar.net — the fallback when the 3D render
+ * is slow or down. It returns real PNG bytes for every IGN on the roster,
+ * which is why it is the one we kept. `size` is the render width in px;
+ * pixelated rendering keeps it crisp.
  */
 export function minotarBodyUrl(username, size = 300) {
   if (!username) return '';
@@ -64,28 +62,16 @@ export function minotarBodyUrl(username, size = 300) {
 }
 
 /**
- * Simple front-facing full body from mc-heads. Kept as the LAST-resort
- * fallback. Note: mc-heads sometimes serves an empty 200 (0-byte PNG) for a
- * username, which the browser treats as an undecodable image — that's why it
- * sits behind minotar in the chain rather than in front of it.
- */
-export function fullBodyFallbackUrl(username) {
-  if (!username) return '';
-  return `${MC_HEADS_BASE}/body/${encodeURIComponent(username)}/right`;
-}
-
-/**
- * Ordered list of flat 2D fallback renderers, tried in turn when the 3D
- * render fails or stalls: minotar first (reliable), mc-heads last (best
- * effort). setupSkinLoaders() walks this chain on each <img> error/timeout.
+ * Flat 2D fallback renderers, tried in turn when the 3D render fails or
+ * stalls. setupSkinLoaders() walks this chain on each <img> error/timeout.
+ *
+ * mc-heads.net used to sit at the end of this chain and was removed: it does
+ * not serve these players' skins at all, it serves default Steve. A fallback
+ * that renders the wrong person is worse than no fallback — the card's own
+ * placeholder is honest about not having the image, a stranger's skin is not.
+ * The chain is deliberately allowed to be one entry long.
  */
 export function skinFallbackChain(username) {
   if (!username) return [];
-  return [minotarBodyUrl(username), fullBodyFallbackUrl(username)];
-}
-
-/** Head-only avatar — handy for compact UIs (footer credits, pin popups). */
-export function headSkinUrl(username, size = 64) {
-  if (!username) return '';
-  return `${MC_HEADS_BASE}/avatar/${encodeURIComponent(username)}/${size}`;
+  return [minotarBodyUrl(username)];
 }

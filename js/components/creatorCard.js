@@ -146,9 +146,9 @@ export const intializeSkinHoverEffects = initializeSkinHoverEffects;
  *   skeleton  : instant, blocky Minecraft shimmer (always renders)
  *   loading   : skeleton stays visible while the <img> fetches
  *   loaded    : .skin-loaded class fades the image in over the skeleton
- *   failed    : walk the fallback chain (minotar → mc-heads) one renderer at
- *               a time; if every link fails, give up and reveal whatever's
- *               there (the nextFallback index prevents re-trying a dead URL)
+ *   failed    : walk the fallback chain (minotar) one renderer at a time; if
+ *               every link fails, give up and reveal whatever's there (the
+ *               nextFallback index prevents re-trying a dead URL)
  *
  * A renderer counts as failed in two ways: it fires an `error` (e.g. a 502),
  * OR it simply never resolves within STALL_MS (a hung/very slow request). The
@@ -160,10 +160,11 @@ export const intializeSkinHoverEffects = initializeSkinHoverEffects;
  * 3D render yet — arming the timer early would bump it to the flat 2D
  * fallback before the 3D render was ever tried, even while it's perfectly up.
  *
- * The fallback chain matters because 3D-render services can have outright
- * outages, and the simplest 2D fallback (mc-heads) can itself serve an empty
- * 200. Trying minotar before mc-heads keeps the grid populated even when two
- * of the services are misbehaving.
+ * The fallback matters because 3D-render services can have outright outages,
+ * so a flat 2D renderer backs the grid up. mc-heads.net used to sit behind
+ * minotar as a second fallback and was removed: it serves default Steve for
+ * these players rather than their actual skin, and a card rendering a
+ * stranger is worse than one showing its own placeholder.
  *
  * Why this is its own function (not part of initializeSkinHoverEffects):
  * the two concerns are independent. Loading happens once per page; hover
@@ -312,7 +313,7 @@ export function creatorCardHTML(creator) {
   const skinUrl = fullBodySkinUrl(skinIdentity(creator, SKIN_MAP), { mode: 'fullbody' });
   // Hover render: the isometric 3/4 angle of the same 3D skin.
   const hoverSkin = fullBodySkinUrl(skinIdentity(creator, SKIN_MAP), { mode: 'fullbodyiso' });
-  // Ordered flat-2D fallback renderers (minotar → mc-heads), tried in turn by
+  // Flat-2D fallback renderer (minotar), tried by
   // setupSkinLoaders if the 3D render errors or stalls past the timeout.
   const fallbacks = skinFallbackChain(creator.mcUsername);
 
