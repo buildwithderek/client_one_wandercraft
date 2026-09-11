@@ -53,6 +53,20 @@ export function buildProviders() {
 
   // One batched Worker request per platform per poll cycle covers every
   // creator, so each provider needs the full handle list up front.
+  //
+  // Twitch goes through the Worker like the others. It used to call decapi.me
+  // straight from the page, but decapi sends no Access-Control-Allow-Origin,
+  // so every one of those requests was CORS-blocked — silently, because a
+  // blocked request is indistinguishable from "not live". No Twitch badge had
+  // lit up for any visitor, while the page retried 13 times a minute forever.
+  const twitchHandles = CREATORS.map((c) => c.twitchUsername).filter(Boolean);
+  if (twitchHandles.length > 0) {
+    providers.twitch = liveStatus.createTwitchProvider({
+      baseUrl: LIVE_WORKER_BASE_URL,
+      handles: twitchHandles,
+    });
+  }
+
   const youtubeHandles = CREATORS.map((c) => c.youtubeHandle).filter(Boolean);
   if (youtubeHandles.length > 0) {
     providers.youtube = liveStatus.createYouTubeProvider({

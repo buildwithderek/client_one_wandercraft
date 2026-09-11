@@ -5,7 +5,9 @@
  * isLive flags) but does the polling client-side where possible and leaves
  * a clean provider seam for platforms that need a backend.
  *
- *   Twitch   → decapi.me public proxy, no auth required, works in browser
+ *   Twitch   → decapi.me, proxied by our Worker (/live?platform=twitch).
+ *              decapi sends no CORS header, so it cannot be called from the
+ *              page. Wire it with createTwitchProvider(). Default: false.
  *   YouTube  → no public no-auth proxy and no CORS, so the check runs in
  *              our own Worker (/live). Wire it with createYouTubeProvider()
  *              once LIVE_WORKER_BASE_URL is set. Default: returns false.
@@ -27,9 +29,9 @@
  *     tiktok:  async (handle) => boolean,
  *   }
  *
- * The default `start()` uses the built-in Twitch (decapi) provider and
- * noop providers for the other two. To enable YouTube live detection,
- * pass `{ providers: { youtube: yourYouTubeFn } }`.
+ * The default `start()` uses noop providers for all three — every platform
+ * needs the Worker. Pass `{ providers: { twitch: createTwitchProvider(...) } }`
+ * and friends to enable them; modules/creators.js does this.
  */
 
 const PLATFORMS = ['twitch', 'youtube', 'tiktok'];
@@ -62,7 +64,13 @@ let timerId = null;
    ============================================================ */
 
 /**
- * Twitch live check via decapi.me. Returns true if the channel is live.
+ * Twitch live check straight against decapi.me.
+ *
+ * NOT usable from a browser: decapi serves no Access-Control-Allow-Origin, so
+ * calls from the site are CORS-blocked and always resolve false. Kept because
+ * the parser below is shared logic and this is exercised by tests with an
+ * injected fetch. Production goes through createTwitchProvider().
+ *
  * Any network error / non-OK / unrecognized body → false (never a lie).
  */
 export async function decapiProvider(twitchUsername, fetchImpl = fetch) {
@@ -95,6 +103,9 @@ export function parseDecapiUptime(text) {
 
 /** Default placeholder for YouTube — always returns false until a real provider is wired. */
 export const youtubeNoopProvider = async () => false;
+
+/** Default placeholder for Twitch — see createTwitchProvider for the real one. */
+export const twitchNoopProvider = async () => false;
 
 /**
  * How long one /live snapshot is reused. This exists to coalesce the burst
@@ -149,6 +160,21 @@ export function createYouTubeProvider(opts = {}) {
  */
 export function createTikTokProvider(opts = {}) {
   return createBatchedProvider({ ...opts, platform: 'tiktok' });
+}
+
+/**
+ * Build a Twitch provider backed by the same Worker /live endpoint.
+ *
+ * Twitch used to be the one platform checked straight from the browser, via
+ * decapi.me. That stopped working: decapi sends no Access-Control-Allow-Origin,
+ * so every request was CORS-blocked and no Twitch badge ever lit up — silently,
+ * because a blocked request looks the same as "not live" to the caller.
+ *
+ * Routing it through the Worker fixes that (no CORS server-side) and batches
+ * the whole roster into one request per poll instead of one per creator.
+ */
+export function createTwitchProvider(opts = {}) {
+  return createBatchedProvider({ ...opts, platform: 'twitch' });
 }
 
 /**
@@ -225,7 +251,11 @@ export function start(creators, opts = {}) {
 
   const intervalMs = opts.intervalMs ?? DEFAULT_POLL_MS;
   const providers = {
-    twitch:  decapiProvider,
+    // All three default to noop. Twitch used to default to decapiProvider,
+    // but decapi blocks browser origins, so that default produced a stream of
+    // failed requests and badges that never lit. modules/creators.js supplies
+    // the Worker-backed provider instead.
+    twitch:  twitchNoopProvider,
     youtube: youtubeNoopProvider,
     tiktok:  tiktokNoopProvider,
     ...opts.providers,

@@ -13,8 +13,8 @@
 /**
  * Base URL of the deployed Cloudflare Worker that backs live status.
  *
- * Shared by YouTube AND TikTok — both run through the same Worker, which
- * takes a ?platform= param.
+ * Shared by Twitch, YouTube AND TikTok — all three run through the same
+ * Worker, which takes a ?platform= param.
  *
  * Neither platform has a CORS-friendly no-auth endpoint the browser can
  * hit directly, so the /live check runs in workers/youtube-feed/worker.js.
@@ -25,8 +25,8 @@
  *
  * Set this back to '' to switch ALL live badges off: modules/creators.js
  * then skips every provider and the pills simply never light up, with the
- * rest of the dashboard unaffected. Twitch does NOT depend on this; it
- * polls decapi.me straight from the browser.
+ * rest of the dashboard unaffected. Twitch depends on this too now: decapi.me
+ * sends no CORS header, so it can only be reached server-side.
  */
 export const LIVE_WORKER_BASE_URL = 'https://wandercraft-youtube-feed.derekpunaroo.workers.dev';
 

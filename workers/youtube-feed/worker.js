@@ -295,7 +295,39 @@ const LIVE_PLATFORMS = {
       + '(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     parse: (html) => parseTikTokLiveHtml(html),
   },
+  // Twitch runs through decapi.me, which needs no auth but sends no
+  // Access-Control-Allow-Origin — so the browser cannot call it directly.
+  // The frontend used to try anyway and every request was CORS-blocked,
+  // which meant Twitch badges never lit up for anyone. Server-side there is
+  // no CORS, so proxying it here fixes the badges and collapses one request
+  // per creator per minute into one batched request for the whole roster.
+  // Unlike the other two this returns plain text, not HTML.
+  twitch: {
+    url: (handle) => `https://decapi.me/twitch/uptime/${encodeURIComponent(handle)}`,
+    ua: 'Mozilla/5.0 (compatible; WanderCraftBot/1.0; +https://playwandercraft.com)',
+    parse: (text) => parseDecapiUptime(text),
+  },
 };
+
+/**
+ * Pure detector for decapi's uptime response. Exported for tests.
+ *   "2 hours, 15 minutes"     → true   (a live channel reports its uptime)
+ *   "somebody is offline"     → false
+ *   "User not found"          → false
+ *   ""                        → false
+ *
+ * Mirrors parseDecapiUptime in js/modules/liveStatus.js; kept in both places
+ * because the Worker cannot import from the site's modules.
+ */
+export function parseDecapiUptime(text) {
+  if (typeof text !== 'string') return false;
+  const lower = text.toLowerCase();
+  if (lower.includes('offline')) return false;
+  if (lower.includes('not found')) return false;
+  if (lower.includes('error')) return false;
+  if (lower.includes('unknown user')) return false;
+  return /^\d/.test(text.trim());   // live uptime strings start with a digit
+}
 
 async function handleLive(url) {
   const platform = (url.searchParams.get('platform') || 'youtube').toLowerCase();
