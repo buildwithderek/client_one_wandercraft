@@ -34,8 +34,10 @@ community fan art, and links to the official store.
   dashboard, merch, and the fan-art gallery.
 - [Who Are the Wanderers?](https://playwandercraft.com/wanderers.html): the three pillars
   of WanderCraft explained in full.
-- [Sponsors](https://playwandercraft.com/sponsors.html): sponsorship slots for Season 3 —
-  server hosting, mods and packs, and one open category. All three slots are currently open.
+- [Sponsors](https://playwandercraft.com/sponsors.html): sponsorship slots for Season 3.
+  CraftLands (craftlands.host) is the official server-hosting partner — the code `wcs`, or
+  the link craftlands.host/p/wcs, takes 30% off a first invoice. The mods-and-packs slot and
+  one open category remain available.
 
 ## Community and links
 

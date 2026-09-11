@@ -342,3 +342,150 @@ a.slot-foot:hover { color: var(--text); }
   .slot { transition: none; }
   .slot:hover { transform: none; }
 }
+
+/* ==========================================================
+   PARTNER SPOTLIGHT
+   Added when Craftlands filled the hosting slot. Their brand
+   teal arrives as --partner-accent on the section, so nothing
+   here hardcodes a second brand's colour.
+   ========================================================== */
+
+.spotlight {
+  --partner-accent: #0AFCFB;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 48px;
+  align-items: center;
+  padding: 34px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(135deg, rgba(10, 252, 251, 0.07), transparent 58%),
+    var(--bg-raised);
+}
+
+.spotlight-name {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.6vw, 40px);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: var(--text);
+  margin: 0 0 16px;
+}
+
+.spotlight-copy p {
+  font-size: 15.5px;
+  line-height: 1.68;
+  color: var(--text-2);
+  max-width: 56ch;
+  margin: 0 0 14px;
+}
+
+.spotlight-copy p:last-of-type { margin-bottom: 0; }
+
+/* The offer. A filled slot has a real number attached, so it gets to be
+   the loudest thing in the block. */
+.spotlight-offer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 16px;
+  margin: 22px 0;
+  padding: 16px 20px;
+  border-left: 3px solid var(--partner-accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.spotlight-offer b {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.spotlight-offer span {
+  font-size: 14.5px;
+  color: var(--text-2);
+}
+
+.spotlight-offer code {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--partner-accent);
+  padding: 4px 12px;
+  border: 1px dashed var(--partner-accent);
+  border-radius: 6px;
+}
+
+.spotlight-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.btn-partner {
+  background: var(--partner-accent);
+  color: #04202a;
+  border: 1px solid var(--partner-accent);
+  font-weight: 700;
+}
+
+.btn-partner:hover { filter: brightness(1.08); }
+
+.spotlight-kicker {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+/* Scan target. The code stops resolving below ~180px, so that is the floor. */
+.spotlight-qr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.spotlight-qr img {
+  width: 200px;
+  min-width: 180px;
+  height: auto;
+  border-radius: 14px;
+  display: block;
+}
+
+.spotlight-qr figcaption {
+  font-family: var(--font-display);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  max-width: 22ch;
+}
+
+@media (max-width: 900px) {
+  .spotlight {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 26px;
+  }
+  .spotlight-qr { align-items: flex-start; text-align: left; }
+}
+
+@media (max-width: 640px) {
+  .spotlight { padding: 22px; }
+  .spotlight-qr { align-self: center; align-items: center; text-align: center; }
+}
