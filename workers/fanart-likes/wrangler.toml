@@ -1,0 +1,18 @@
+# Cloudflare Workers deploy config for the fan-art like counter.
+# `wrangler deploy` reads this file from the working directory.
+
+name = "wandercraft-fanart-likes"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+
+# Shared like counts live in KV. Keys:
+#   count:<itemId>              total, as a decimal string
+#   vote:<itemId>:<visitorId>   presence = that visitor currently likes it
+#   rl:<ip>:<minute>            per-IP write budget, 60s TTL
+[[kv_namespaces]]
+binding = "FANART_LIKES"
+id = "3f34069275574b0aa472f5f5155496e6"
+
+# Workers free tier: 100,000 requests/day, and KV free tier 100,000 reads and
+# 1,000 writes/day. Reads are edge-cached for 15s; a write only happens when
+# somebody actually clicks a heart, so the write budget is the real ceiling.
