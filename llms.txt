@@ -1,7 +1,7 @@
 # WanderCraft
 
 > WanderCraft is a Minecraft Creator SMP and creator collective built around three
-> pillars — Dreamers, Adventurers, and World Builders. Fourteen creators stream and
+> pillars — Dreamers, Adventurers, and World Builders. Eighteen creators stream and
 > publish content from the shared world, backed by a Discord community, a fan-art
 > gallery, and an official merch store. Tagline: "The Adventure Is Everywhere."
 
@@ -14,7 +14,7 @@ community fan art, and links to the official store.
 
 - **A Minecraft Creator SMP** — a shared survival multiplayer world that member creators
   play on and make content from.
-- **A creator collective** — 14 creators, led by founders SenseiTalon and Jvshua, with
+- **A creator collective** — 18 creators, led by founders SenseiTalon and Jvshua, with
   Moosted as head admin. The rest hold the title "Creative Wanderer."
 - **A community** — open Discord, community fan-art features each season, and a merch
   store at shopwandercraft.com.

@@ -1,5 +1,5 @@
 /**
- * The real WanderCraft 14, mirroring playwandercraft.com/creators.
+ * The real WanderCraft 18, mirroring playwandercraft.com/creators.
  *
  * Each entry feeds the creator card (image + name + role + platform pills)
  * and the multi-platform live-status dashboard.
@@ -51,6 +51,10 @@ export const CREATORS = [
   { id: 'shashadivine', name: 'shashadivine', role: 'CREATIVE WANDERER', mcUsername: 'shashadivine', twitchUsername: 'shasha_divine', youtubeHandle: 'ShashaDivine', youtubeChannelId: 'UCZb73SS4E_j6qUI7qDqHM0w', tiktokHandle: 'shashadivine', instagramHandle: null, discordInvite: 'https://discord.gg/rBTRbW8JFs' },
   { id: 'creetchrampage', name: 'CreetchRampage', role: 'CREATIVE WANDERER', mcUsername: 'CreetchRampage', twitchUsername: 'creetchrampage', youtubeHandle: 'CreetchRampage', youtubeChannelId: 'UCqqV91BEDr_0hj9wH0T03fw', tiktokHandle: 'creetchrampage', instagramHandle: null, discordInvite: 'https://discord.gg/azzQDjrPWQ' },
 
+  { id: 'popsbuilds', name: 'PopsBuilds', role: 'CREATIVE WANDERER', mcUsername: 'PopsBuilds', twitchUsername: 'popsbuilds', youtubeHandle: 'popsbuilds', youtubeChannelId: 'UCU0ggIJWkXkpwkoi1CBC5CA', tiktokHandle: 'popsbuilds', instagramHandle: 'popsbuilds', discordInvite: 'https://discord.gg/popsbuilds' },
+  { id: 'skewda', name: 'Skewda', role: 'CREATIVE WANDERER', mcUsername: 'Skewdz', twitchUsername: 'Skewda', youtubeHandle: 'Skewda', youtubeChannelId: 'UCpCEqrOT0AqLxhYQvcR0Ezw', tiktokHandle: 'skewdacraft', instagramHandle: 'skewdacraft', discordInvite: 'https://discord.gg/YfRckksE8R' },
+  { id: 'hoopsivan', name: 'Ivan', role: 'CREATIVE WANDERER', mcUsername: 'hoopsivan', twitchUsername: 'hoopsivan', youtubeHandle: 'hoopsivan', youtubeChannelId: 'UCEGC0qsjmzdnn2cczpKsWdQ', tiktokHandle: 'hoopsivan', instagramHandle: null, discordInvite: 'https://discord.gg/Jvz87MfExH' },
+  { id: 'ontix', name: 'Ontix', role: 'CREATIVE WANDERER', mcUsername: '0ntix', twitchUsername: null, youtubeHandle: 'itzontix', youtubeChannelId: 'UCbF4cJxOtE_yW5QZ0oUUWJA', tiktokHandle: 'itsontix', instagramHandle: 'itsontix', discordInvite: 'https://discord.gg/JXgADXK7hN' },
 ];
 
 /** Role display: keys are the canonical role strings, values style hooks. */
