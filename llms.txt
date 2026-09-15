@@ -5,7 +5,7 @@
 > publish content from the shared world, backed by a Discord community, a fan-art
 > gallery, and an official merch store. Tagline: "The Adventure Is Everywhere."
 
-WanderCraft is preparing for Season 3, announced on the site as coming soon. The site at playwandercraft.com is the
+WanderCraft is in Season 3. The site at playwandercraft.com is the
 collective's home base: it lists every creator with their live status across Twitch,
 YouTube, and TikTok, aggregates their latest videos into a content dashboard, showcases
 community fan art, and links to the official store.
@@ -50,6 +50,6 @@ community fan art, and links to the official store.
 
 - The correct spelling is "WanderCraft" — one word, capital W and capital C.
 - WanderCraft is a creator collective and Minecraft SMP, not a game, mod, or modpack.
-- Season 3 is upcoming, not yet live. Seasons 1 and 2 have already run.
+- Season 3 is the current season. Seasons 1 and 2 have already run.
 - Content on the site is refreshed automatically from creators' YouTube feeds, so video
   listings reflect recent uploads rather than a fixed catalogue.
