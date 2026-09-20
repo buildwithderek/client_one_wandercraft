@@ -8,7 +8,7 @@
     "publishedAt": "2026-09-18T20:10:40.006Z",
     "link": "https://www.youtube.com/watch?v=nZxmnv29z60",
     "thumbnail": "https://i.ytimg.com/vi/nZxmnv29z60/hqdefault.jpg",
-    "viewCount": 441
+    "viewCount": 1000
   },
   {
     "id": "ouBEYBjvasU",
@@ -29,7 +29,8 @@
     "type": "videos",
     "publishedAt": "2026-09-12T19:00:32.000Z",
     "link": "https://www.youtube.com/watch?v=FdJYU4kSBik",
-    "thumbnail": "https://i.ytimg.com/vi/FdJYU4kSBik/hqdefault.jpg"
+    "thumbnail": "https://i.ytimg.com/vi/FdJYU4kSBik/hqdefault.jpg",
+    "viewCount": 319
   },
   {
     "id": "L3bIQs9f11s",
@@ -40,7 +41,7 @@
     "publishedAt": "2026-09-12T14:43:02.000Z",
     "link": "https://www.youtube.com/shorts/L3bIQs9f11s",
     "thumbnail": "https://i.ytimg.com/vi/L3bIQs9f11s/hqdefault.jpg",
-    "viewCount": 1200
+    "viewCount": 1100
   },
   {
     "id": "Q7Tc5jhKkl0",
@@ -51,7 +52,7 @@
     "publishedAt": "2026-09-12T13:45:39.000Z",
     "link": "https://www.youtube.com/watch?v=Q7Tc5jhKkl0",
     "thumbnail": "https://i.ytimg.com/vi/Q7Tc5jhKkl0/hqdefault.jpg",
-    "viewCount": 732
+    "viewCount": 780
   },
   {
     "id": "LCHHNXspa9w",
@@ -62,7 +63,7 @@
     "publishedAt": "2026-09-12T13:00:36.000Z",
     "link": "https://www.youtube.com/watch?v=LCHHNXspa9w",
     "thumbnail": "https://i.ytimg.com/vi/LCHHNXspa9w/hqdefault.jpg",
-    "viewCount": 9500
+    "viewCount": 9600
   },
   {
     "id": "g78rGuPHurU",
@@ -73,7 +74,7 @@
     "publishedAt": "2026-09-12T13:00:32.000Z",
     "link": "https://www.youtube.com/watch?v=g78rGuPHurU",
     "thumbnail": "https://i.ytimg.com/vi/g78rGuPHurU/hqdefault.jpg",
-    "viewCount": 922
+    "viewCount": 887
   },
   {
     "id": "cMSGwlb4N2U",
@@ -84,7 +85,7 @@
     "publishedAt": "2026-09-12T13:00:29.000Z",
     "link": "https://www.youtube.com/watch?v=cMSGwlb4N2U",
     "thumbnail": "https://i.ytimg.com/vi/cMSGwlb4N2U/hqdefault.jpg",
-    "viewCount": 410
+    "viewCount": 414
   },
   {
     "id": "aJi69yZwX2w",
@@ -95,7 +96,7 @@
     "publishedAt": "2026-09-12T13:00:26.000Z",
     "link": "https://www.youtube.com/watch?v=aJi69yZwX2w",
     "thumbnail": "https://i.ytimg.com/vi/aJi69yZwX2w/hqdefault.jpg",
-    "viewCount": 9000
+    "viewCount": 8900
   },
   {
     "id": "mn_NbNOmdWU",
@@ -105,7 +106,8 @@
     "type": "videos",
     "publishedAt": "2026-09-12T13:00:24.000Z",
     "link": "https://www.youtube.com/watch?v=mn_NbNOmdWU",
-    "thumbnail": "https://i.ytimg.com/vi/mn_NbNOmdWU/hqdefault.jpg"
+    "thumbnail": "https://i.ytimg.com/vi/mn_NbNOmdWU/hqdefault.jpg",
+    "viewCount": 1500
   },
   {
     "id": "oTAcgXCxX_U",
@@ -115,7 +117,8 @@
     "type": "videos",
     "publishedAt": "2026-09-12T13:00:06.000Z",
     "link": "https://www.youtube.com/watch?v=oTAcgXCxX_U",
-    "thumbnail": "https://i.ytimg.com/vi/oTAcgXCxX_U/hqdefault.jpg"
+    "thumbnail": "https://i.ytimg.com/vi/oTAcgXCxX_U/hqdefault.jpg",
+    "viewCount": 3200
   },
   {
     "id": "i_Z4YyNlyH4",
@@ -125,8 +128,7 @@
     "type": "videos",
     "publishedAt": "2026-09-12T13:00:04.000Z",
     "link": "https://www.youtube.com/watch?v=i_Z4YyNlyH4",
-    "thumbnail": "https://i.ytimg.com/vi/i_Z4YyNlyH4/hqdefault.jpg",
-    "viewCount": 2600
+    "thumbnail": "https://i.ytimg.com/vi/i_Z4YyNlyH4/hqdefault.jpg"
   },
   {
     "id": "YPB2nYZUcQ8",
@@ -138,6 +140,17 @@
     "link": "https://www.youtube.com/watch?v=YPB2nYZUcQ8",
     "thumbnail": "https://i.ytimg.com/vi/YPB2nYZUcQ8/hqdefault.jpg",
     "viewCount": 1100
+  },
+  {
+    "id": "JTAKvx8TLIk",
+    "title": "Mining and Indeed Crafting!",
+    "channelTitle": "Skewda",
+    "channelId": "UCpCEqrOT0AqLxhYQvcR0Ezw",
+    "type": "streams",
+    "publishedAt": "2026-09-08T02:17:49.461Z",
+    "link": "https://www.youtube.com/watch?v=JTAKvx8TLIk",
+    "thumbnail": "https://i.ytimg.com/vi/JTAKvx8TLIk/hqdefault.jpg",
+    "viewCount": 146
   },
   {
     "id": "lTn122HLNnA",
@@ -203,7 +216,7 @@
     "publishedAt": "2026-08-16T18:21:51.000Z",
     "link": "https://www.youtube.com/shorts/329MbSBPrrw",
     "thumbnail": "https://i.ytimg.com/vi/329MbSBPrrw/hqdefault.jpg",
-    "viewCount": 401
+    "viewCount": 408
   },
   {
     "id": "FdH4YrQ78iA",
@@ -224,7 +237,8 @@
     "type": "videos",
     "publishedAt": "2026-07-30T14:00:35.000Z",
     "link": "https://www.youtube.com/watch?v=lc5OwfoAQHI",
-    "thumbnail": "https://i.ytimg.com/vi/lc5OwfoAQHI/hqdefault.jpg"
+    "thumbnail": "https://i.ytimg.com/vi/lc5OwfoAQHI/hqdefault.jpg",
+    "viewCount": 430
   },
   {
     "id": "ggpAVfESKIo",
@@ -293,17 +307,6 @@
     "viewCount": 562
   },
   {
-    "id": "66XWOe9g7e0",
-    "title": "[Wandercraft S2 Ep. 3] 10 Wanderers, 1 Dragon.",
-    "channelTitle": "K4MPY",
-    "channelId": "UCqUgEGSb-Dy2UO8HKojAdDQ",
-    "type": "videos",
-    "publishedAt": "2025-09-11T14:00:15.000Z",
-    "link": "https://www.youtube.com/watch?v=66XWOe9g7e0",
-    "thumbnail": "https://i.ytimg.com/vi/66XWOe9g7e0/hqdefault.jpg",
-    "viewCount": 33
-  },
-  {
     "id": "CBpIaTKOKgY",
     "title": "pack with me for singapore! | ft. storytimes and sleep deprivation",
     "channelTitle": "shashadivine",
@@ -323,7 +326,7 @@
     "publishedAt": null,
     "link": "https://www.youtube.com/shorts/dZQ8zcG0Uaw",
     "thumbnail": "https://i.ytimg.com/vi/dZQ8zcG0Uaw/hqdefault.jpg",
-    "viewCount": 1100
+    "viewCount": 1200
   },
   {
     "id": "EWzE4I46QyQ",
@@ -334,6 +337,6 @@
     "publishedAt": null,
     "link": "https://www.youtube.com/shorts/EWzE4I46QyQ",
     "thumbnail": "https://i.ytimg.com/vi/EWzE4I46QyQ/hqdefault.jpg",
-    "viewCount": 1200
+    "viewCount": 1100
   }
 ]
