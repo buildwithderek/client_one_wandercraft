@@ -279,9 +279,29 @@ a.slot-foot:hover { color: var(--text); }
 
 .sponsor-cta {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 48px;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 380px);
+  gap: 56px;
   align-items: center;
+}
+
+/* The signal artwork. Same frame as the page's other raised visuals
+   (recipe result, spotlight): 1px strong border, --radius-lg. The one
+   flourish is a soft ocean-blue glow that echoes the searchlight beam. */
+.sponsor-cta-art {
+  margin: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--bg-raised);
+  box-shadow: 0 24px 60px -24px rgba(41, 171, 226, 0.45);
+}
+
+.sponsor-cta-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
 }
 
 .sponsor-cta h2 {
@@ -303,7 +323,7 @@ a.slot-foot:hover { color: var(--text); }
   margin: 0;
 }
 
-.sponsor-cta-action { text-align: center; }
+.sponsor-cta-action { margin-top: 30px; }
 
 .sponsor-cta-note {
   margin: 12px 0 0;
@@ -322,6 +342,11 @@ a.slot-foot:hover { color: var(--text); }
   .sponsor-cta {
     grid-template-columns: 1fr;
     gap: 34px;
+  }
+
+  .sponsor-cta-art img {
+    aspect-ratio: 4 / 5;
+    object-position: 50% 22%;
   }
 
   .recipe {
