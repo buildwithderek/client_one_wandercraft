@@ -17,7 +17,7 @@
   /* Text */
   --text:    #eef2f8;
   --text-2:  #a9b4c8;
-  --text-3:  #67718a;
+  --text-3:  #8b95ab;   /* was #67718a — 3.5:1, below AA. This clears 4.5:1 on every surface. */
 
   /* Brand — sampled from the Season 3 logo: grass green, ocean blue,
      CRAFT orange, SEASON gold */
@@ -35,9 +35,9 @@
   --filter-videos-solid:  #14B8A6;
   --filter-shorts:        linear-gradient(135deg, #4ADE80, #16A34A);  /* short-form — green */
   --filter-shorts-solid:  #22C55E;
-  --filter-streams:       linear-gradient(135deg, #F87171, #DC2626);  /* live — red */
+  --filter-streams:       linear-gradient(135deg, #DC2626, #991B1B);  /* live — red, darkened so white text clears AA */
   --filter-streams-solid: #EF4444;
-  --filter-bts:           linear-gradient(135deg, #94A3B8, #475569);  /* extras — slate */
+  --filter-bts:           linear-gradient(135deg, #64748B, #334155);  /* extras — slate, darkened so white text clears AA */
   --filter-bts-solid:     #64748B;
   --filter-all:           #F8FAFC;                                    /* default — neutral light */
   --filter-all-text:      #0F172A;
@@ -659,8 +659,12 @@ img {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);  /* keep white legible on lighter fills */
 }
 
-.content-filters .filter-btn[data-filter="videos"].active  { background: var(--filter-videos); }
-.content-filters .filter-btn[data-filter="shorts"].active  { background: var(--filter-shorts); }
+/* Videos and Shorts are light fills — white on them measured 1.86:1 and
+   1.74:1. Dark ink on the same fills measures 4.85:1 and 5.42:1, so the hue
+   identity survives and the label becomes readable. Streams and BTS stay
+   white on their (now darker) fills. */
+.content-filters .filter-btn[data-filter="videos"].active  { background: var(--filter-videos); color: var(--filter-all-text); text-shadow: none; }
+.content-filters .filter-btn[data-filter="shorts"].active  { background: var(--filter-shorts); color: var(--filter-all-text); text-shadow: none; }
 .content-filters .filter-btn[data-filter="streams"].active { background: var(--filter-streams); }
 .content-filters .filter-btn[data-filter="bts"].active     { background: var(--filter-bts); }
 
@@ -1057,8 +1061,9 @@ img {
 /* Badges share the content-type color identity (same hues as the filter pills),
    so Videos/Shorts/Streams read the same color throughout. */
 .content-badge { color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); }
-.badge-video  { background: var(--filter-videos); }
-.badge-short  { background: var(--filter-shorts); }
+/* Same reasoning as the filter pills above — these share the fills. */
+.badge-video  { background: var(--filter-videos); color: var(--filter-all-text); text-shadow: none; }
+.badge-short  { background: var(--filter-shorts); color: var(--filter-all-text); text-shadow: none; }
 .badge-stream { background: var(--filter-streams); }
 .badge-bts    { background: var(--filter-bts); }
 
@@ -1897,13 +1902,22 @@ img {
     opacity: 0;
     transform: translateY(-8px);
     pointer-events: none;
-    transition: opacity var(--t-med), transform var(--t-med);
+    /* visibility, not just opacity: an opacity-0 menu still puts every link in
+       the tab order and the accessibility tree, so keyboard users tabbed
+       through six invisible links. visibility:hidden removes them from both.
+       It is listed in the transition so the fade still plays on the way out. */
+    visibility: hidden;
+    transition: opacity var(--t-med), transform var(--t-med),
+                visibility 0s linear var(--t-med);
   }
 
   .nav-links.open {
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
+    visibility: visible;
+    transition: opacity var(--t-med), transform var(--t-med),
+                visibility 0s linear 0s;
   }
 
   .nav-link {
