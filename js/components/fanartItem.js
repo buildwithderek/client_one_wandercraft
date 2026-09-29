@@ -51,6 +51,14 @@ export function fanArtItemHTML(item) {
                   border: 1px solid ${item.color}44;">
         <div class="fanart-placeholder-block" style="background: ${item.color}"></div>
         ${imageMarkup}
+        <!-- The tile looked clickable but was an inert div. This is the real
+             control: a full-bleed button so the artwork opens by mouse AND by
+             keyboard, and screen readers get a name for it. It sits beneath
+             the like button in z-order so that keeps working. -->
+        <button type="button"
+                class="fanart-open"
+                data-open-id="${item.id}"
+                aria-label="View ${escapeAttr(item.title)} by ${escapeAttr(item.artist)} at full size"></button>
         <button type="button"
                 class="fanart-likes"
                 data-id="${item.id}"

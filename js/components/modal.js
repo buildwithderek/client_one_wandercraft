@@ -17,6 +17,8 @@ let rootEl = null;
 let lastFocused = null;
 let keydownBound = false;
 
+import { escapeHtml, escapeUrl } from '../utils/escape.js';
+
 function ensureRoot() {
   // If our cached node is still attached to the document, reuse it.
   // If something removed it (test teardown, host page re-rendering), drop
@@ -92,9 +94,13 @@ function trapFocus(e) {
  *     secondary: { label: 'Cancel' }   // close-only by default
  *   })
  */
-export function open({ title, body, primary, secondary }) {
+export function open({ title, body, primary, secondary, variant }) {
   const root = ensureRoot();
   lastFocused = document.activeElement;
+
+  // Variants only widen/restyle the shell; all the dialog behaviour is shared.
+  root.classList.remove(...[...root.classList].filter((c) => c.startsWith('modal-root--')));
+  if (variant) root.classList.add(`modal-root--${variant}`);
 
   root.querySelector('#modal-title').textContent = title || '';
   root.querySelector('.modal-body').innerHTML = body || '';
@@ -110,9 +116,16 @@ export function open({ title, body, primary, secondary }) {
   root.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
 
-  // Focus the dialog itself so screen readers announce the title,
-  // then the user tabs into the actions.
-  root.querySelector('.modal-dialog').focus();
+  // Focus the dialog itself so screen readers announce the title, then the
+  // user tabs into the actions.
+  //
+  // Deferred a frame on purpose: .open has only just been set, and the root
+  // is still visibility:hidden until styles recalculate. Focusing a hidden
+  // element is a no-op, which left focus outside the dialog entirely — so
+  // Esc worked but a screen reader was never taken into it.
+  const dialog = root.querySelector('.modal-dialog');
+  if (typeof requestAnimationFrame === 'function') requestAnimationFrame(() => dialog.focus());
+  else dialog.focus();
 }
 
 export function close() {
@@ -150,6 +163,34 @@ function actionButton(action, defaultClass) {
     close();
   });
   return btn;
+}
+
+/**
+ * Lightbox for a single image.
+ *
+ * Reuses the dialog wholesale — Esc, backdrop click, focus trap, scroll lock
+ * and focus restore are already solved here, and a gallery should not
+ * reimplement any of them.
+ *
+ * Values are escaped even though fan-art data is authored in the repo: `body`
+ * is assigned as innerHTML, and a title with a stray quote should break
+ * nothing.
+ */
+export function openImage({ title, caption, src, width, height, alt }) {
+  const safeSrc = escapeUrl(src);
+  if (!safeSrc) return;
+  open({
+    title,
+    variant: 'image',
+    body: `
+      <figure class="modal-figure">
+        <img src="${safeSrc}"
+             alt="${escapeHtml(alt || title || '')}"
+             ${width && height ? `width="${escapeHtml(width)}" height="${escapeHtml(height)}"` : ''}>
+        ${caption ? `<figcaption>${escapeHtml(caption)}</figcaption>` : ''}
+      </figure>
+    `,
+  });
 }
 
 /** Convenience for "this isn't live yet, here's how to reach us" CTAs. */

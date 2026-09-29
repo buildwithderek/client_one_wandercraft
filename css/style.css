@@ -1295,6 +1295,30 @@ img {
   opacity: 0.7;
 }
 
+/* The real control for opening a piece. Covers the tile, invisible until
+   focused — the tile used to claim cursor:pointer while doing nothing. */
+.fanart-open {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: var(--radius);
+}
+
+.fanart-open:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
+
+/* Above the open button so liking a piece still works. */
+.fanart-likes { z-index: 2; }
+
+/* Decorative caption — let clicks through to the button underneath. */
+.fanart-overlay { pointer-events: none; }
+
 .fanart-image {
   position: absolute;
   inset: 0;
@@ -1642,6 +1666,41 @@ img {
   font-size: 1.3rem;
   margin-bottom: 12px;
   padding-right: 36px;
+}
+
+/* Image lightbox: a wider shell, and art that fits the viewport whole
+   rather than being cropped again on the way out of the gallery. */
+.modal-root--image .modal-dialog {
+  width: min(920px, 100%);
+  padding: 30px 24px 24px;
+}
+
+.modal-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.modal-figure img {
+  display: block;
+  max-width: 100%;
+  max-height: min(70vh, 640px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.modal-figure figcaption {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-2);
 }
 
 .modal-body {

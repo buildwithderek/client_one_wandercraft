@@ -28,14 +28,21 @@ export function escapeHtml(value) {
 
 /**
  * Escape a URL for an href/src attribute, rejecting any scheme that can execute
- * script. Only absolute http(s), protocol-relative, and site-relative paths get
- * through; anything else returns '' so the caller can omit the attribute.
+ * script. Through: absolute http(s), protocol-relative, site-relative paths,
+ * and document-relative paths like `assets/art/piece.webp`. Anything else
+ * returns '' so the caller can omit the attribute.
+ *
+ * The rule for relative paths is that they contain no colon at all, so they
+ * cannot carry a scheme. That is what keeps `javascript:` out while letting
+ * the site's own asset paths through — they are the common case for images.
  */
 export function escapeUrl(value) {
   if (value == null) return '';
   // Strip control characters and spaces first — "java\tscript:" is still javascript:.
   const normalized = String(value).replace(/[\u0000-\u0020]/g, '');
-  const allowed = /^(?:https?:)?\/\//i.test(normalized) || /^\/(?!\/)/.test(normalized);
+  const allowed = /^(?:https?:)?\/\//i.test(normalized)   // //host or https://host
+    || /^\/(?!\/)/.test(normalized)                        // /site/relative
+    || !normalized.includes(':');                          // document-relative
   return allowed ? escapeHtml(normalized) : '';
 }
 

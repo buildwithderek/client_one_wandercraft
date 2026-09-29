@@ -129,3 +129,44 @@ describe('like counts', () => {
     expect(getVisitorId()).toBe(first);
   });
 });
+
+/* ---------- lightbox ---------- */
+
+import { FAN_ART_ITEMS } from '../js/data/fanart.js';
+import { fanArtItemHTML } from '../js/components/fanartItem.js';
+
+describe('opening a piece', () => {
+  test('each tile carries a focusable control with an accessible name', () => {
+    const item = FAN_ART_ITEMS[0];
+    const tpl = document.createElement('template');
+    tpl.innerHTML = fanArtItemHTML(item).trim();
+    const btn = tpl.content.querySelector('.fanart-open');
+    expect(btn).toBeTruthy();
+    expect(btn.tagName).toBe('BUTTON');           // reachable by keyboard, not an inert div
+    expect(btn.dataset.openId).toBe(item.id);
+    expect(btn.getAttribute('aria-label')).toContain(item.title);
+  });
+
+  test('activating it opens the dialog with that artwork', () => {
+    document.querySelector('.modal-root')?.remove();
+    const item = FAN_ART_ITEMS[1];
+    const host = document.createElement('div');
+    host.innerHTML = fanArtItemHTML(item);
+    document.body.appendChild(host);
+
+    __test.onOpenClick({ target: host.querySelector('.fanart-open') });
+
+    const root = document.querySelector('.modal-root');
+    expect(root.classList.contains('open')).toBe(true);
+    expect(root.classList.contains('modal-root--image')).toBe(true);
+    expect(root.querySelector('#modal-title').textContent).toBe(item.title);
+    expect(root.querySelector('.modal-figure img').getAttribute('src')).toBe(item.image);
+    host.remove();
+  });
+
+  test('a click that misses the control opens nothing', () => {
+    document.querySelector('.modal-root')?.remove();
+    __test.onOpenClick({ target: document.createElement('div') });
+    expect(document.querySelector('.modal-root')?.classList.contains('open')).toBeFalsy();
+  });
+});

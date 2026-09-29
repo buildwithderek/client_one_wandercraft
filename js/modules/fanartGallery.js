@@ -24,6 +24,7 @@
 import { FAN_ART_ITEMS } from '../data/fanart.js';
 import { fanArtItemHTML } from '../components/fanartItem.js';
 import { observeNewElements } from './scrollReveal.js';
+import { openImage } from '../components/modal.js';
 import { LIKES_API_URL, LIKES_TIMEOUT_MS } from '../data/likesConfig.js';
 
 /** Only the first N items render — keeps the gallery a curated showcase. */
@@ -49,6 +50,7 @@ export function initFanArtGallery() {
   render(grid);
   hydrateLikes(grid);                 // instant, from localStorage
   grid.addEventListener('click', onLikeClick);
+  grid.addEventListener('click', onOpenClick);
   hydrateCountsFromServer(grid);      // then reconcile with the shared counts
 }
 
@@ -65,6 +67,22 @@ function render(grid) {
   const visible = FAN_ART_ITEMS.slice(0, TOP_N);
   grid.innerHTML = visible.map(fanArtItemHTML).join('');
   observeNewElements(grid.querySelectorAll('.fanart-item'));
+}
+
+/** Tile clicked (or activated by keyboard) — show the piece at full size. */
+export function onOpenClick(e) {
+  const btn = e.target.closest('.fanart-open');
+  if (!btn) return;
+  const item = FAN_ART_ITEMS.find((i) => i.id === btn.dataset.openId);
+  if (!item || !item.image) return;
+  openImage({
+    title: item.title,
+    caption: `by ${item.artist}`,
+    src: item.image,
+    width: item.width,
+    height: item.height,
+    alt: `${item.title} by ${item.artist}`,
+  });
 }
 
 /* ---------- local state ---------- */
@@ -205,6 +223,7 @@ function setLikeState(btn, isLiked) {
 /* ---------- test seams ---------- */
 
 export const __test = {
+  onOpenClick,
   setCounts: (next) => { counts = next; },
   getCounts: () => counts,
   hydrateCountsFromServer,
