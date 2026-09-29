@@ -8,8 +8,9 @@
  *     instead of a broken-image icon.
  *   - no image → just the gradient placeholder block.
  *
- * Either way the height comes from `item.height`, so the masonry layout
- * doesn't depend on the image actually loading.
+ * Either way the tile's box is reserved before the image loads — from the
+ * artwork's own aspect ratio where we have it — so the masonry layout does
+ * not depend on the image arriving, and nothing shifts when it does.
  */
 
 import { ICONS } from './icons.js';
@@ -23,9 +24,21 @@ export function fanArtItemHTML(item) {
     ? `<img class="fanart-image"
            src="${item.image}"
            alt="${escapeAttr(item.title)} by ${escapeAttr(item.artist)}"
+           ${item.width && item.height ? `width="${item.width}" height="${item.height}"` : ''}
            loading="lazy"
            onerror="this.style.display='none'">`
     : '';
+
+  // Shape the tile to the artwork. Every tile used to be a hard-coded pixel
+  // height, so object-fit: cover trimmed whatever did not fit — the contest
+  // winner lost nearly a third of its width. Giving the box the image's own
+  // ratio means cover has nothing left to cut.
+  //
+  // Items with no dimensions keep the old fixed-height behaviour, so a piece
+  // added without them still renders.
+  const sizing = item.width && item.height
+    ? `aspect-ratio: ${item.width} / ${item.height};`
+    : `height: ${item.height}px;`;
 
   return `
     <div class="fanart-item reveal"
@@ -33,7 +46,7 @@ export function fanArtItemHTML(item) {
          data-type="${item.type}"
          data-likes="${item.likes}">
       <div class="fanart-placeholder"
-           style="height: ${item.height}px;
+           style="${sizing}
                   background: linear-gradient(135deg, ${item.color}33, ${item.color}11);
                   border: 1px solid ${item.color}44;">
         <div class="fanart-placeholder-block" style="background: ${item.color}"></div>

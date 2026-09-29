@@ -306,3 +306,30 @@ describe('skinIdentity', () => {
     expect(skinIdentity(undefined, {})).toBe('');
   });
 });
+
+/* ---------- fan-art tiles must not crop the artwork ---------- */
+
+describe('fanArtItemHTML sizing', () => {
+  const base = { id: 'a', title: 'Sunset', artist: 'Pixel42', type: 'artwork', likes: 0, color: '#FF8C42' };
+
+  test('takes the artwork ratio so object-fit has nothing to crop', () => {
+    const frag = parse(fanArtItemHTML({ ...base, width: 800, height: 524, image: 'a.webp' }));
+    const style = frag.querySelector('.fanart-placeholder').getAttribute('style');
+    expect(style).toContain('aspect-ratio: 800 / 524');
+    // The fixed pixel height is what forced the crop — it must be gone.
+    expect(style).not.toMatch(/height:\s*\d+px/);
+  });
+
+  test('declares the image dimensions so the tile reserves its space', () => {
+    const img = parse(fanArtItemHTML({ ...base, width: 800, height: 524, image: 'a.webp' }))
+      .querySelector('.fanart-image');
+    expect(img.getAttribute('width')).toBe('800');
+    expect(img.getAttribute('height')).toBe('524');
+  });
+
+  test('an item with no width still renders, at a fixed height', () => {
+    const style = parse(fanArtItemHTML({ ...base, height: 200, image: 'a.webp' }))
+      .querySelector('.fanart-placeholder').getAttribute('style');
+    expect(style).toContain('height: 200px');
+  });
+});
