@@ -122,6 +122,11 @@ export function initCreators() {
         : pill.dataset.profileHref;
       if (target) pill.href = target;
       pill.classList.toggle('is-live', snap.isLive);
+      // The LIVE pip is CSS-only and sits behind aria-hidden, so going live
+      // was invisible to assistive tech. Fold it into the pill's name.
+      const base = pill.dataset.baseLabel
+        || (pill.dataset.baseLabel = pill.getAttribute('aria-label') || '');
+      pill.setAttribute('aria-label', snap.isLive ? `${base} — live now` : base);
     }
     updateCardLiveFlag(grid, creatorId);
     updateLiveCount();
@@ -208,6 +213,10 @@ function updateLiveCount() {
   const count = CREATORS.filter((c) => liveStatus.anyLiveFor(c.id)).length;
   node.textContent = String(count);
   node.dataset.liveCount = String(count);
+  // A bare number changing is meaningless when announced; give it words, and
+  // let it speak politely when creators go live or drop off.
+  node.setAttribute('role', 'status');
+  node.setAttribute('aria-label', `${count} creator${count === 1 ? '' : 's'} live now`);
   document.querySelector('.creator-dashboard-meta')
     ?.classList.toggle('has-live', count > 0);
 }

@@ -82,24 +82,52 @@ export function applyFilterAndSort(items, { filter, sort }) {
 }
 
 function render(grid) {
-  const visible = applyFilterAndSort(items, state).slice(0, state.visibleCount);
+  const matching = applyFilterAndSort(items, state);
+  const visible = matching.slice(0, state.visibleCount);
   grid.innerHTML = visible.map((item, i) => contentCardHTML(item, i)).join('');
 
   updateLoadMoreState();
+  announce(grid, visible.length, matching.length);
+}
+
+/**
+ * Say out loud what just changed.
+ *
+ * Filtering, sorting and Load More all rebuild the grid silently — sighted
+ * users see the cards change, screen-reader users got nothing at all. This
+ * polite live region reports the result count after every render.
+ */
+function announce(grid, shown, total) {
+  let region = document.getElementById('contentStatus');
+  if (!region) {
+    region = document.createElement('p');
+    region.id = 'contentStatus';
+    region.className = 'sr-only';
+    region.setAttribute('role', 'status');      // implies aria-live="polite"
+    grid.parentNode.insertBefore(region, grid);
+  }
+  const label = (CONTENT_FILTERS.find((f) => f.value === state.filter) || {}).label || 'items';
+  region.textContent = total === 0
+    ? `No ${label.toLowerCase()} to show.`
+    : `Showing ${shown} of ${total} ${label.toLowerCase()}.`;
 }
 
 function renderFilterBar() {
   const bar = document.querySelector('.content-filters');
   if (!bar) return;
-  bar.setAttribute('role', 'tablist');
+  // Not tabs: there are no tabpanels, no aria-controls and no arrow-key
+  // navigation, so claiming role="tablist" promised a keyboard contract the
+  // component never honoured. These are toggle buttons over one shared grid,
+  // which is what aria-pressed describes. The group role also gives the
+  // existing aria-label something to attach to.
+  bar.setAttribute('role', 'group');
   bar.innerHTML = CONTENT_FILTERS.map(
     (f) => `
       <button
         type="button"
-        role="tab"
         class="filter-btn ${f.value === state.filter ? 'active' : ''}"
         data-filter="${f.value}"
-        aria-selected="${f.value === state.filter}">${f.label}</button>
+        aria-pressed="${f.value === state.filter}">${f.label}</button>
     `,
   ).join('');
 
@@ -111,7 +139,7 @@ function renderFilterBar() {
     bar.querySelectorAll('.filter-btn').forEach((b) => {
       const active = b === btn;
       b.classList.toggle('active', active);
-      b.setAttribute('aria-selected', String(active));
+      b.setAttribute('aria-pressed', String(active));
     });
     const grid = document.getElementById('contentGrid');
     if (grid) render(grid);
@@ -138,15 +166,18 @@ function bindLoadMore(grid) {
   if (!btn) return;
 
   btn.addEventListener('click', () => {
+    // aria-disabled, not disabled — see updateLoadMoreState.
+    if (btn.getAttribute('aria-disabled') === 'true') return;
+
     state.visibleCount += LOAD_MORE_BATCH;
     btn.textContent = 'Loading...';
-    btn.disabled = true;
+    btn.setAttribute('aria-busy', 'true');
+    btn.setAttribute('aria-disabled', 'true');
 
     // Tiny delay so the loading state is visible — purely UX polish.
     setTimeout(() => {
       render(grid);
-      btn.disabled = false;
-      btn.textContent = 'Load More';
+      btn.removeAttribute('aria-busy');
       updateLoadMoreState();
     }, 250);
   });
@@ -156,15 +187,13 @@ function updateLoadMoreState() {
   const btn = document.getElementById('loadMore');
   if (!btn) return;
   const total = applyFilterAndSort(items, state).length;
-  if (state.visibleCount >= total) {
-    btn.textContent = 'All caught up!';
-    btn.disabled = true;
-    btn.setAttribute('aria-disabled', 'true');
-    btn.style.opacity = '0.5';
-  } else {
-    btn.disabled = false;
-    btn.removeAttribute('aria-disabled');
-    btn.style.opacity = '';
-    btn.textContent = 'Load More';
-  }
+  const exhausted = state.visibleCount >= total;
+
+  // aria-disabled rather than the disabled property. A disabled button drops
+  // out of the tab order, so pressing Load More until the list ran out threw
+  // the user's focus back to <body> and lost their place on the page. This
+  // keeps it focusable and inert; the click handler returns early.
+  btn.setAttribute('aria-disabled', String(exhausted));
+  btn.textContent = exhausted ? 'All caught up!' : 'Load More';
+  btn.style.opacity = exhausted ? '0.5' : '';
 }

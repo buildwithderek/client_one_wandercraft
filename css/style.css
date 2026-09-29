@@ -130,6 +130,21 @@ img {
   border-radius: 6px;
 }
 
+/* Visually hidden, still announced. Used by the dashboard's live region and
+   anywhere else text exists only for assistive tech. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 .skip-link {
   position: fixed;
   top: -100px;
@@ -1353,7 +1368,7 @@ img {
   transform: translateY(0);
 }
 
-.fanart-overlay h4 {
+.fanart-overlay h3 {
   font-size: 0.95rem;
   margin-bottom: 2px;
 }

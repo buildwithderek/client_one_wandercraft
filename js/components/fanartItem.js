@@ -70,7 +70,7 @@ export function fanArtItemHTML(item) {
         </button>
       </div>
       <div class="fanart-overlay">
-        <h4>${item.title}</h4>
+        <h3>${item.title}</h3>
         <p>by ${item.artist}</p>
       </div>
     </div>

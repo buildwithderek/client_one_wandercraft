@@ -20,9 +20,12 @@ describe('creatorCardHTML (playwandercraft layout)', () => {
     twitchUsername: 'senseitalon',
   };
 
-  test('renders the creator name as a heading', () => {
+  test('renders the creator name as a heading under the section title', () => {
     const frag = parse(creatorCardHTML(creator));
-    expect(frag.querySelector('h2').textContent.trim()).toBe('SenseiTalon');
+    // h3, not h2: the section's own "Meet the Wanderers" is the h2, so cards
+    // are its children rather than eighteen siblings of it.
+    expect(frag.querySelector('h3').textContent.trim()).toBe('SenseiTalon');
+    expect(frag.querySelector('h2')).toBeFalsy();
   });
 
   test('renders the role in upper-case under the name', () => {
@@ -230,7 +233,9 @@ describe('fanArtItemHTML', () => {
 
   test('renders title, artist, and like count formatted with commas', () => {
     const frag = parse(fanArtItemHTML(item));
-    expect(frag.querySelector('h4').textContent).toBe('Sunset');
+    // h3: the gallery's own "Fan Art Gallery" is the h2, so a tile heading
+    // must not skip a level down to h4.
+    expect(frag.querySelector('h3').textContent).toBe('Sunset');
     expect(frag.querySelector('p').textContent).toBe('by Pixel42');
     expect(frag.querySelector('.fanart-likes').textContent).toContain('1,234');
   });

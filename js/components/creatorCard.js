@@ -343,7 +343,7 @@ export function creatorCardHTML(creator) {
       </div>
 
       <div class="creator-v2-meta">
-        <h2 class="creator-v2-name">${creator.name}</h2>
+        <h3 class="creator-v2-name">${creator.name}</h3>
         <p class="creator-v2-role creator-v2-role--${roleVariant}">${creator.role}</p>
       </div>
     </article>
