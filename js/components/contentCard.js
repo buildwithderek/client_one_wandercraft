@@ -24,7 +24,7 @@ export function contentCardHTML(item, index = 0) {
     : '';
   const thumbSrc = escapeUrl(item.thumbnail);
   const thumbImg = thumbSrc
-    ? `<img class="content-thumb-img" src="${thumbSrc}" alt="" loading="lazy" onerror="this.remove()">`
+    ? `<img class="content-thumb-img" src="${thumbSrc}" alt="" width="480" height="360" loading="lazy" onerror="this.remove()">`
     : '';
 
   return `

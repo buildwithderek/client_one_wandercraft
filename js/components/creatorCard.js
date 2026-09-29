@@ -337,6 +337,7 @@ export function creatorCardHTML(creator) {
           data-hover="${hoverSkin}"
           data-fallbacks="${fallbacks.join('|')}"
           alt="${creator.name}'s Minecraft skin"
+          width="512" height="869"
           loading="lazy">
 
         ${platformPills}

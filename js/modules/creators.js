@@ -167,14 +167,16 @@ function injectFilterBar(section, grid) {
   if (!section || section.querySelector('.creator-filter-bar')) return;
   const bar = document.createElement('div');
   bar.className = 'creator-filter-bar';
-  bar.setAttribute('role', 'tablist');
+  // Toggle buttons over one grid, not tabs: no tabpanels, no aria-controls,
+  // no arrow-key navigation. Same correction as the content dashboard's bar.
+  bar.setAttribute('role', 'group');
+  bar.setAttribute('aria-label', 'Filter creators');
   bar.innerHTML = FILTERS.map(
     (f) => `
       <button type="button"
-              role="tab"
               class="creator-filter-btn ${f.id === activeFilter ? 'is-active' : ''}"
               data-filter="${f.id}"
-              aria-selected="${f.id === activeFilter}">${f.label}</button>
+              aria-pressed="${f.id === activeFilter}">${f.label}</button>
     `,
   ).join('');
 
@@ -185,7 +187,7 @@ function injectFilterBar(section, grid) {
     bar.querySelectorAll('.creator-filter-btn').forEach((b) => {
       const on = b === btn;
       b.classList.toggle('is-active', on);
-      b.setAttribute('aria-selected', String(on));
+      b.setAttribute('aria-pressed', String(on));
     });
     applyFilter(grid);
   });
