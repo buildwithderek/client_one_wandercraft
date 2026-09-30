@@ -14,7 +14,7 @@
 
 export const SKIN_MAP = {
   'senseitalon': { texture: '9adf6fa881787f98ea0b1123da790e7e25d628eccbdbb943d77839c222b7c526', model: 'classic' },
-  'jvshua': { texture: '56078d206b0642859103bbd1ccab282af51d08bb8a8cd5988970c0205bc0472f', model: 'slim' },
+  'jvshua': { texture: '39484fbde8bd496d06f0d35a420c9814d464cacf9cdd741395cd90cfce12061b', model: 'slim' },
   'moosted': { texture: '89a47bc71054fd5c8de3ae0284ab9bbcfdbc8d6fca874a6497746b8be8d3ab8c', model: 'classic' },
   'K4MPY': { texture: '5fa3069539c59a4bb349f4fb6b3097f1acca53a84e4c27fda2ee7bbb43b688ab', model: 'classic' },
   'skertpert': { texture: '5833ea63e6d56c08ef1309eea9c754a6c5465b103645062475d354d672db025e', model: 'slim' },
@@ -30,5 +30,4 @@ export const SKIN_MAP = {
   'popsbuilds': { texture: '293f9b841238cabf051db83327653bdffd074639adfe9412da504ac8b5c1adfd', model: 'slim' },
   'skewda': { texture: 'a6a678e06190eaec87275cc32b147b766d89cb4179ec5a4d31006a466ef08f1d', model: 'classic' },
   'hoopsivan': { texture: 'c29a6760eed29849a1c7384e5fe3dc8b19681e74ef4fcb51d89d7d67bd084c72', model: 'classic' },
-  'ontix': { texture: 'b4151103d37c13e589eb4cd201180deb4e7a01f0ac2a1c4381121a70cb99d8c9', model: 'slim' },
 };
