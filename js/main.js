@@ -21,7 +21,6 @@ import { initMerch } from './modules/merch.js';
 import { initFooter } from './modules/footer.js';
 import { initSmoothScroll } from './modules/smoothScroll.js';
 import { initButtonGlow } from './modules/buttonGlow.js';
-import { initGlobe } from './globe.js';
 
 function boot() {
   const steps = [
@@ -34,7 +33,6 @@ function boot() {
     ['footer', initFooter],
     ['smooth scroll', initSmoothScroll],
     ['button glow', initButtonGlow],
-    ['globe', initGlobe],
     // Scroll reveal runs last so it sees everything the others rendered.
     ['scroll reveal', initScrollReveal],
   ];

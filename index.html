@@ -345,11 +345,13 @@
   </footer>
 
   <!--
-    Three.js is loaded as a CDN global. Our own code is an ES module, which
-    requires being served over http(s), not file://. Run `npm run serve` or
-    any static dev server.
+    Our own code is an ES module, which requires being served over http(s),
+    not file://. Run `npm run serve` or any static dev server.
+
+    Three.js used to load here for a voxel globe. No page has ever carried a
+    globe canvas, so it was ~589 KB of render-blocking library fetched on
+    every visit to render nothing.
   -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script type="module" src="js/main.js"></script>
 </body>
 </html>
