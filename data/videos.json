@@ -10,17 +10,6 @@
     "thumbnail": "https://i.ytimg.com/vi/IlPm7AkiWBo/hqdefault.jpg"
   },
   {
-    "id": "C_EKGt7ILWs",
-    "title": "#sklump playing #minecraftdungeons cause he couldn't wait for the #sift #minecraft #wandercraft",
-    "channelTitle": "Sklump",
-    "channelId": "UCnoDpA_FqyXaGhzJTFuahOw",
-    "type": "shorts",
-    "publishedAt": "2026-10-01T22:01:00.000Z",
-    "link": "https://www.youtube.com/shorts/C_EKGt7ILWs",
-    "thumbnail": "https://i.ytimg.com/vi/C_EKGt7ILWs/hqdefault.jpg",
-    "viewCount": 1400
-  },
-  {
     "id": "y3e5wy2LdHg",
     "title": "building an ENCHANTED trading hall in HARDCORE MINECRAFT",
     "channelTitle": "zuttz",
@@ -39,7 +28,7 @@
     "publishedAt": "2026-09-30T20:45:37.000Z",
     "link": "https://www.youtube.com/shorts/uxntqvIzw0g",
     "thumbnail": "https://i.ytimg.com/vi/uxntqvIzw0g/hqdefault.jpg",
-    "viewCount": 5000
+    "viewCount": 5200
   },
   {
     "id": "vdbyV5pAQ2o",
@@ -134,16 +123,6 @@
     "thumbnail": "https://i.ytimg.com/vi/cMSGwlb4N2U/hqdefault.jpg"
   },
   {
-    "id": "JTAKvx8TLIk",
-    "title": "Mining and Indeed Crafting!",
-    "channelTitle": "Skewda",
-    "channelId": "UCpCEqrOT0AqLxhYQvcR0Ezw",
-    "type": "streams",
-    "publishedAt": "2026-09-07T05:41:10.000Z",
-    "link": "https://www.youtube.com/watch?v=JTAKvx8TLIk",
-    "thumbnail": "https://i.ytimg.com/vi/JTAKvx8TLIk/hqdefault.jpg"
-  },
-  {
     "id": "lTn122HLNnA",
     "title": "Famous last words.... #minecraft #nether #thatwasclose #minecraftnether",
     "channelTitle": "MossyMads",
@@ -195,7 +174,7 @@
     "publishedAt": "2026-08-16T18:21:51.000Z",
     "link": "https://www.youtube.com/shorts/329MbSBPrrw",
     "thumbnail": "https://i.ytimg.com/vi/329MbSBPrrw/hqdefault.jpg",
-    "viewCount": 456
+    "viewCount": 465
   },
   {
     "id": "lc5OwfoAQHI",
@@ -271,15 +250,15 @@
     "thumbnail": "https://i.ytimg.com/vi/66XWOe9g7e0/hqdefault.jpg"
   },
   {
-    "id": "T9Ehx3yTbT8",
-    "title": "How to Unlock the New Minecraft Aurora Cape! #minecraft #minecraftdungeons  #minecraftcape",
+    "id": "6H8sffR1xBQ",
+    "title": "YOU can add your OWN Minecraft Skin to Dungeons 2?!! 🤯 #minecraft #minecraftdungeons",
     "channelTitle": "SenseiTalon",
     "channelId": "UCg969guBVdvlhqzegxPS_tg",
     "type": "shorts",
     "publishedAt": null,
-    "link": "https://www.youtube.com/shorts/T9Ehx3yTbT8",
-    "thumbnail": "https://i.ytimg.com/vi/T9Ehx3yTbT8/hqdefault.jpg",
-    "viewCount": 1900
+    "link": "https://www.youtube.com/shorts/6H8sffR1xBQ",
+    "thumbnail": "https://i.ytimg.com/vi/6H8sffR1xBQ/hqdefault.jpg",
+    "viewCount": 933
   },
   {
     "id": "zo9htT6dBAI",
@@ -291,6 +270,17 @@
     "link": "https://www.youtube.com/shorts/zo9htT6dBAI",
     "thumbnail": "https://i.ytimg.com/vi/zo9htT6dBAI/hqdefault.jpg",
     "viewCount": 1300
+  },
+  {
+    "id": "yro_HTiD_40",
+    "title": "#sklump is loving his #aynthor really helping get through his #backlog #retro #tech",
+    "channelTitle": "Sklump",
+    "channelId": "UCnoDpA_FqyXaGhzJTFuahOw",
+    "type": "shorts",
+    "publishedAt": null,
+    "link": "https://www.youtube.com/shorts/yro_HTiD_40",
+    "thumbnail": "https://i.ytimg.com/vi/yro_HTiD_40/hqdefault.jpg",
+    "viewCount": 1100
   },
   {
     "id": "PX0f1YJ1-UE",
@@ -321,5 +311,26 @@
     "publishedAt": null,
     "link": "https://www.youtube.com/watch?v=YPB2nYZUcQ8",
     "thumbnail": "https://i.ytimg.com/vi/YPB2nYZUcQ8/hqdefault.jpg"
+  },
+  {
+    "id": "D3bWe0oExyg",
+    "title": "Mining and Indeed Crafting!",
+    "channelTitle": "Skewda",
+    "channelId": "UCpCEqrOT0AqLxhYQvcR0Ezw",
+    "type": "streams",
+    "publishedAt": null,
+    "link": "https://www.youtube.com/watch?v=D3bWe0oExyg",
+    "thumbnail": "https://i.ytimg.com/vi/D3bWe0oExyg/hqdefault.jpg"
+  },
+  {
+    "id": "L3bIQs9f11s",
+    "title": "Starting Fresh in a Brand New Minecraft World",
+    "channelTitle": "Ivan",
+    "channelId": "UCEGC0qsjmzdnn2cczpKsWdQ",
+    "type": "shorts",
+    "publishedAt": null,
+    "link": "https://www.youtube.com/shorts/L3bIQs9f11s",
+    "thumbnail": "https://i.ytimg.com/vi/L3bIQs9f11s/hqdefault.jpg",
+    "viewCount": 1100
   }
 ]
