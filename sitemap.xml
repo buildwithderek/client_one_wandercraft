@@ -12,6 +12,12 @@
     </image:image>
   </url>
   <url>
+    <loc>https://playwandercraft.com/downloads.html</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://playwandercraft.com/sponsors.html</loc>
     <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>

@@ -2027,3 +2027,93 @@ img {
     transform: none;
   }
 }
+
+/* ==========================================================
+   SEASON 2 WORLD DOWNLOAD BAND  (homepage)
+
+   One band between the content feed and the fan-art gallery,
+   pointing at downloads.html. Reduced to a single CTA on
+   purpose: the install steps need room the homepage does not
+   have, and two competing buttons here would split the click.
+   ========================================================== */
+
+.worldband-section {
+  /* Tighter than a full .section — this is a band, not a chapter. */
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.worldband {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 40px;
+  align-items: center;
+  padding: 46px 48px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  /* Ocean blue washing in from the right, where the globe mark sits. */
+  background:
+    radial-gradient(120% 150% at 100% 50%, rgba(41, 171, 226, 0.16), transparent 62%),
+    var(--bg-raised);
+}
+
+.worldband-copy { max-width: 62ch; }
+
+.worldband-eyebrow {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  margin: 0 0 14px;
+}
+
+/* .section-title carries its own margin-bottom; .section-desc does not. */
+.worldband .section-desc { margin: 0 0 28px; }
+
+.worldband-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+}
+
+.worldband-meta {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Decorative globe. Large, low-contrast, and aria-hidden — it sets the tone
+   without asking to be read. */
+.worldband-art {
+  color: var(--accent-2);
+  opacity: 0.22;
+  line-height: 0;
+}
+
+.worldband-art svg {
+  width: 148px;
+  height: 148px;
+}
+
+@media (max-width: 860px) {
+  .worldband {
+    grid-template-columns: 1fr;
+    padding: 34px 26px;
+  }
+
+  /* The globe leads instead of trailing once the band stacks, so the copy
+     still ends on the button rather than on an ornament. */
+  .worldband-art { order: -1; }
+  .worldband-art svg { width: 84px; height: 84px; }
+}
+
+@media (max-width: 560px) {
+  .worldband-ctas { align-items: stretch; flex-direction: column; gap: 14px; }
+  .worldband-ctas .btn { width: 100%; }
+}

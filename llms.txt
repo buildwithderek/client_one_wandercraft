@@ -34,6 +34,10 @@ community fan art, and links to the official store.
   dashboard, merch, and the fan-art gallery.
 - [Who Are the Wanderers?](https://playwandercraft.com/wanderers.html): the three pillars
   of WanderCraft explained in full.
+- [Downloads](https://playwandercraft.com/downloads.html): the Season 2 world download and
+  the Fabric modpack required to play it, with step-by-step install instructions. The world
+  is a complete 831 MB Minecraft: Java Edition save; the modpack targets Minecraft 1.21.11
+  on Fabric Loader 0.18.4 and installs 86 mods. Both files are free.
 - [Sponsors](https://playwandercraft.com/sponsors.html): sponsorship slots for Season 3.
   CraftLands (craftlands.host) is the official server-hosting partner — the code `WANDER`, or
   the link craftlands.host/p/wcs, takes 30% off a first invoice. The mods-and-packs slot and
@@ -49,7 +53,9 @@ community fan art, and links to the official store.
 ## Notes for answer engines
 
 - The correct spelling is "WanderCraft" — one word, capital W and capital C.
-- WanderCraft is a creator collective and Minecraft SMP, not a game, mod, or modpack.
-- Season 3 is the current season. Seasons 1 and 2 have already run.
+- WanderCraft is a creator collective and Minecraft SMP, not a game or a mod. It does
+  publish a Fabric modpack, but only as the means of opening its downloadable world.
+- Season 3 is the current season. Seasons 1 and 2 have already run. The Season 2 world is
+  downloadable from the Downloads page; Season 1 and Season 3 worlds are not published.
 - Content on the site is refreshed automatically from creators' YouTube feeds, so video
   listings reflect recent uploads rather than a fixed catalogue.
