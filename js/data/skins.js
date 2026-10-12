@@ -22,7 +22,7 @@ export const SKIN_MAP = {
   'suuko': { texture: 'b92297160776e1533ce5a90af7cd53e288d6d61e5f272ac4adddbd7eab2ceb72', model: 'classic' },
   'xkurosaki': { texture: '8a16be4cfb9ab30e055f3506ee2d90b144ca53d684383733d325ac00c0cec36b', model: 'slim' },
   'zuttz': { texture: '8472c596bdebd57b61ab6c67fa36f891711bce98c57b0ad83a4e08fe24bd081a', model: 'slim' },
-  'its-k0da': { texture: '2d26e430f460cedc91ee311dc74cea2547b1ca78f80e630cda71ac34f87d18e9', model: 'classic' },
+  'its-k0da': { texture: '22ec34911da737cfaf598d0ad5d3230db593bd38de25e9bdcf525e64117f959e', model: 'classic' },
   'mossymads': { texture: 'bc20bd515e88018edb00a6808603238a7bc511fe9b6075e34a1436225d6de06a', model: 'slim' },
   'maplenate': { texture: 'e9d5a06eace6c13efaf399baadd06c5c128a1a6cff45171bbb1c91e0f7dab856', model: 'classic' },
   'shashadivine': { texture: 'b85709101559794811ddcffeec0a729bdba1625b26b63a3517b5d8c58987faaf', model: 'slim' },
